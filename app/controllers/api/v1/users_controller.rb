@@ -9,7 +9,9 @@ class Api::V1::UsersController < ApiController
   end
 
   def show
-    render json: @user
+    followings_count = @user.followings.count
+    followers_count = @user.followers.count
+    render json: { user: @user, followings_count: followings_count, followers_count: followers_count}
   end
 
   def edit

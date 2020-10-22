@@ -13,6 +13,12 @@ class User < ActiveRecord::Base
   has_many :favorite_posts, through: :favorites, source: :post
   has_many :comments
 
+  has_many :active_relationships, class_name: "Relationship", foreign_key: :following_id
+  has_many :followings, through: :active_relationships, source: :follower
+
+  has_many :passive_relationships, class_name: "Relationship", foreign_key: :follower_id
+  has_many :followers, through: :passive_relationships, source: :following
+
   #statusが選択されていること
   STATUS = { HeavyUser: 0, User: 1, Driver: 2 }
   enum status: STATUS
