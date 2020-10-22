@@ -11,6 +11,7 @@ class User < ActiveRecord::Base
   has_many :posts
   has_many :favorites
   has_many :favorite_posts, through: :favorites, source: :post
+  has_many :comments
 
   #statusが選択されていること
   STATUS = { HeavyUser: 0, User: 1, Driver: 2 }

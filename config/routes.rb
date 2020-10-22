@@ -11,6 +11,7 @@ Rails.application.routes.draw do
       resources :users
       resources :posts do
         resource :favorites, only: [:create, :destroy]
+        resource :comments, only: [:create, :update, :destroy]
       end
       resources :restaurants
     end
