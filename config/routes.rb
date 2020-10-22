@@ -8,7 +8,12 @@ Rails.application.routes.draw do
     end
     
     namespace :v1 do
-      resources :users
+      resources :users do
+        resource :relationships, only: [:create, :destroy]
+      end
+
+
+
       resources :posts do
         resource :favorites, only: [:create, :destroy]
         resource :comments, only: [:create, :update, :destroy]
