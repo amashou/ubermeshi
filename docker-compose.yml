@@ -1,0 +1,31 @@
+version: '3'
+volumes:
+  mysql-data:
+services:
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: $DB_USERNAME
+      MYSQL_ROOT_PASSWORD: $DB_PASSWORD
+    ports:
+      - "3306:3306"
+    # volumes:
+      # - mysql-data:/var/lib/mysql/data
+  web:
+    build: .
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    environment:
+      - RESTAURAMT_URL=$RESTAURANT_URL
+      - RESTAURAMT_API=$RESTAURANT_API
+    volumes:
+      - .:/myapp
+    tty: true
+    stdin_open: true
+    depends_on:
+      - db
+    links:
+      - db
+    ports:
+      - '3000:3000'
+    volumes:
+      - .:/myapp

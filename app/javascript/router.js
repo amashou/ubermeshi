@@ -1,0 +1,63 @@
+import Vue from 'vue';
+import Router from 'vue-router';
+
+import Top from './pages/Top.vue';
+import Login from './pages/auth/Login.vue';
+import Signup from './pages/auth/Signup.vue';
+
+import UserIndex from './pages/user/UserIndex.vue';
+import UserDetail from './pages/user/UserDetail.vue';
+import UserEdit from './pages/user/UserEdit.vue';
+import PostCreate from './pages/post/PostCreate.vue';
+import PostDetail from './pages/post/PostDetail.vue';
+import store from './store';
+
+
+Vue.use(Router);
+
+export default new Router({
+    mode: 'history',
+    routes: [
+        {
+            path: '/',
+            name: "Top",
+            component: Top
+        },
+        {
+            path: '/login',
+            name: 'Login',
+            component: Login
+        },
+        {
+            path: '/signup',
+            name: 'Signup',
+            component: Signup
+        },
+        {
+            path: '/users',
+            name: 'UserIndex',
+            component: UserIndex
+        },
+        {
+            path: '/users/:id',
+            name: 'UserDetail',
+            component: UserDetail
+        },
+        {
+            path: '/users/:id/edit',
+            name: 'UserEdit',
+            component: UserEdit
+        },
+        {
+            path: '/posts/new',
+            name: 'PostCreate',
+            component: PostCreate,
+            meta: { requiresAuth: true }
+        },
+        {
+            path: '/posts/:id',
+            name: 'PostDetail',
+            component: PostDetail
+        }
+    ]
+});
