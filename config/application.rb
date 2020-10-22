@@ -16,6 +16,15 @@ module UbermeshiApp
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
+    Rails.application.config.middleware.insert_before 0, Rack::Cors do
+      allow do
+        origins '*'
+        resource '*',
+          headers: 'Content-Type,X-Requested-With,Accept,Origin',
+          methods: [:get, :post, :put, :delete, :options]
+      end
+    end
+    
     config.generators do |g|
       g.assets false
       g.helpers false

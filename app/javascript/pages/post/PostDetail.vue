@@ -17,20 +17,21 @@
                     <v-card-title>{{post.restaurant_name}}</v-card-title>
                     <v-card-subtitle>{{post.title}}</v-card-subtitle>
                     <v-card-text>{{post.description}}</v-card-text>
-                    <v-card-text>いいね数：{{post.favorited_user}}</v-card-text>
+                    <v-card-text>いいね数：{{favorites_count}}</v-card-text>
                 </v-col>
             </v-row>
             <v-row>
                 <v-col>
                     <v-card-actions>
                     <v-spacer></v-spacer>
-                        <v-btn class="ma-2" text icon color="blue lighten-2"><v-icon>mdi-thumb-up</v-icon></v-btn>
-                        <v-btn class="ma-2" text icon color="red lighten-2"><v-icon>mdi-thumb-down</v-icon></v-btn>
+                        <v-btn class="ma-2" text icon color="blue lighten-2" @click="favorite"><v-icon>mdi-thumb-up</v-icon></v-btn>
+                        <v-btn class="ma-2" text icon color="red lighten-2" @click="unfavorite"><v-icon>mdi-thumb-down</v-icon></v-btn>
                         <v-btn><v-icon text color="blue darken-2">mdi-message-text</v-icon></v-btn>
+                        <p v-if="errors">{{errors}}</p>
                     </v-card-actions>
                 </v-col>
             </v-row>
-            <v-row>
+            <!-- <v-row>
           <v-col
             v-for="card in cards"
             :key="card"
@@ -66,28 +67,16 @@
               </v-list>
             </v-card>
           </v-col>
-            </v-row>
+            </v-row> -->
+            <v-form @submit.prevent="comment">
+                <v-text-field label="コメント" v-model="formComment"></v-text-field>
+                <v-btn type="submit">コメントする</v-btn>
+            </v-form>
+            <ul v-if="comments">
+                <li v-for="(comment, index) in comments" :key="index">コメント：{{comment.comment}}</li>
+            </ul>
         </v-container>
     </v-main>
-    <!-- <div>
-        <h2>投稿詳細ページ</h2>
-        <ul>
-            <li>タイトル{{post.title}}</li>
-            <li>ウバポイント：{{post.description}}</li>
-            <li>利用回数{{post.times}}</li>
-            <li>お店の名前：{{post.restaurant_name}}</li>
-            <li>住所：{{restaurant.address}}</li>
-        </ul>
-        <h3>ユーザー情報</h3>
-        <ul>
-            <li>ユーザー：{{user.name}}</li>
-            <li>ステータス：{{user.status}}</li>
-            <li>ユーザーID{{user.id}}</li>
-            <li>ログインユーザーID：{{current_user.id}}</li>
-        </ul>
-        <v-btn @click="like">いいね</v-btn>
-        <v-btn @click="unlike">いいね削除</v-btn>
-    </div> -->
 </template>
 
 <script>
@@ -100,8 +89,11 @@ export default {
           post: {},
           restaurant: {},
           user: {},
-          favorited_user:{},
-          current_user:{}
+          favorites_count:'',
+          current_user:{},
+          comments: [],
+          formComment: "",
+          errors: ""
         }
     },
     created(){
@@ -112,33 +104,56 @@ export default {
                 this.post = response.data.post;
                 this.restaurant = response.data.restaurant;
                 this.user = response.data.user;
-                this.favorited_users = response.data.favorited_users;
+                this.favorites_count = response.data.favorites_count;
                 this.current_user = response.data.current_user;
+                this.comments = response.data.comments;
             })
             .catch((errors) => {
                 console.log(errors);
             });
     },
     methods: {
-        like(){
+        favorite(){
             axios.post('/posts/' + this.post.id + '/favorites',)
                 .then((response) => {
                     console.log(response);
-                    this.favorited_user = response.data
+                    if(response.data.favorites_count){
+                        this.favorites_count = response.data.favorites_count;
+                    } else {
+                        this.errors = response.data.message;
+                    }
                 })
                 .catch((errors) => {
                     console.log(errors);
                 });
         },
-        unlike(){
-            axios.delete('/posts/' + this.post.id + '/favorites', { params: this.post.id })
+        unfavorite(){
+            axios.delete('/posts/' + this.post.id + '/favorites')
+                .then((response) => {
+                    console.log(response.data.favorites_count);
+                    if(response.data.favorites_count){
+                        this.favorites_count = response.data.favorites_count;
+                    } else {
+                        this.errors = response.data.message;
+                    }
+                })
+                .catch((errors) => {
+                    console.log(errors);
+                });
+        },
+        comment() {
+            const formData = new FormData();
+            formData.append('comment', this.formComment);
+            console.log(formData);
+            axios.post('/posts/' + this.post.id + '/comments', formData)
                 .then((response) => {
                     console.log(response);
+                    this.comments = response.data.comments;
                 })
-                .catch((errors) => {
-                    console.log(errors);
-                });
-        },
+                .catch((error) => {
+                    console.log(error);
+                })
+        }
     }
 };
 </script>

@@ -42,6 +42,10 @@ export default {
            restaurantInfo:[]
         }
     },
+    created(){
+        console.log(process.env.RESTAURANT_URL);
+        console.log(process.env.RESTAURANT_API);
+    },
     methods: {
         // selectedFile(e) {
         //     if (!e) {
@@ -59,10 +63,11 @@ export default {
         },
         searchReastaurant(){
             const url = process.env.RESTAURANT_URL;
-            const api_key = process.env.RESTAURANT_API;
+            const api = process.env.RESTAURANT_API;
             let params = '&name=' + this.restaurant_name;
+            console.log("url==" + url + "api===" +  api);
 
-            axios.get(url + api_key + params)
+            axios.get(url + api + params)
                 .then((response) => {
                     console.log(response.data.rest);
                     this.restaurants = response.data.rest;
