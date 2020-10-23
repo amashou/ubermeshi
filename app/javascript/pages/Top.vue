@@ -1,58 +1,28 @@
 <template>
     <v-container>
-        <v-row>
-          <v-col cols="10">
-            <v-sheet>
-                <h3>新着投稿しました<small>~new posts~</small></h3>
-                <p>ログイン状態：{{ isLoggedIn }}</p>
-                <v-row>
-                    <v-col v-for="(post,index) in posts" :key="index" cols="4">
-                        <v-card class="mx-4 mb-4">
-                            <router-link :to="{ name: 'PostDetail', params: { id: post.id }}">
-                            <v-img height="200px"></v-img>
-                            <v-divider></v-divider>
-                            <v-card-title>{{post.title}}</v-card-title>
-                            <v-card-subtitle>{{post.restaurant_name}}</v-card-subtitle>
-                            <v-divider></v-divider>
-                            <v-card-text>{{post.description}}</v-card-text>
-                            <v-card-actions>
-                                <v-btn><v-icon>mdi-heart</v-icon></v-btn>
-                            </v-card-actions>
-                            </router-link>
-                        </v-card>
-                    </v-col>
-                </v-row>
-            </v-sheet>
-          </v-col>
-          <v-col cols="2">
-            <v-sheet rounded="lg">
-              <v-card>
-                  <v-list>
-                      <v-subheader>イーターランキング</v-subheader>
-                      <v-list-item-group v-model="item" color="primary">
-                        <v-list-item v-for="(item, index) in items" :key="index">
-                            <v-list-item-content>
-                                <v-list-item-title>No.{{index}}: {{item}}</v-list-item-title>
-                            </v-list-item-content>
-                        </v-list-item>
-                      </v-list-item-group>
-                  </v-list>
-              </v-card>
-            </v-sheet>
-              <v-card class="my-5">
-                  <v-list>
-                      <v-subheader>ドライバーランキング</v-subheader>
-                      <v-list-item-group v-model="item" color="primary">
-                        <v-list-item v-for="(item, index) in items" :key="index">
-                            <v-list-item-content>
-                                <v-list-item-title>No.{{index}}: {{item}}</v-list-item-title>
-                            </v-list-item-content>
-                        </v-list-item>
-                      </v-list-item-group>
-                  </v-list>
-              </v-card>
-          </v-col>
-        </v-row>
+        <v-layout row class="mb-3 px-4">
+            <v-chip color="pink" link outlined　class="mr-2">新着順</v-chip>
+            <v-chip color="pink" link outlined　class="mr-2">人気順</v-chip>
+            <v-chip color="pink" link outlined　class="mr-2">ドライバー</v-chip>
+            <v-chip color="pink" link outlined　class="mr-2">イーター</v-chip>
+            <v-chip color="pink" link outlined　class="mr-2">新メニュー</v-chip>
+        </v-layout>
+        <v-layout row wrap class="px-2 grey--text">
+            <v-flex v-for="(post,index) in posts" :key="index" md4 sm6 xs12 px-1>
+                <v-card class="mx-4 mb-4" color="#EEE" raised>
+                    <v-img height="150px"></v-img>
+                    <v-divider></v-divider>
+                    <v-card-title>post-title</v-card-title>
+                    <v-card-subtitle>レストラン名</v-card-subtitle>
+                    <v-divider></v-divider>
+                    <v-card-text>ウバポイント</v-card-text>
+                    <v-chip class="ma-2" outlined route :to="{ name: 'PostDetail', params: {id: post.id} }">more info</v-chip>
+                </v-card>
+            </v-flex>
+            <v-btn fab color="pink" dark class="mr-3 float-btn" @click="dialog = !dialog">
+                <v-icon>mdi-plus</v-icon>
+            </v-btn>
+        </v-layout>
     </v-container>
 </template>
 
@@ -87,3 +57,12 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.float-btn {
+    position: fixed;
+	bottom: 50px;
+    right: 30px;
+}
+
+</style>
