@@ -3,7 +3,8 @@
         <h2>ユーザー情報編集ページ</h2>
         <v-form @submit.prevent="update">　
                 <v-avatar>
-                    <img v-if="user.image !== null" :src="user.image.url">
+                    <!-- <img v-if="user.image !== null" :src="user.thumbnail.url"> -->
+                    <img v-if="user.image !== null" :src="user.thumbnail">
                     <v-icon v-else size="100" color="#90A4AE" dark>mdi-account-circle</v-icon>
                 </v-avatar>
                 <v-file-input @change="selectedFile" prepend-icon="mdi-camera" label="アイコン"></v-file-input>
@@ -50,7 +51,7 @@ export default {
                 this.isAddedfile = false;
             }else{
                 console.log(e);
-                this.user.image = e;
+                this.user.thumbnail = e;
                 this.preview = window.URL.createObjectURL(e);
                 this.isAddedfile = true;
             }
