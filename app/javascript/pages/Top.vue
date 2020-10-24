@@ -8,9 +8,9 @@
             <v-chip color="pink" link outlined　class="mr-2">新メニュー</v-chip>
         </v-layout>
         <v-layout row wrap class="px-2 grey--text">
-            <v-flex v-for="(post,index) in posts" :key="index" md4 sm6 xs12 px-1>
+            <v-flex v-for="(post,index) in posts" :key="index" md4 sm6 xs11 mx-auto>
                 <v-card class="mx-4 mb-4" color="#EEE" raised>
-                    <v-img height="150px"></v-img>
+                    <v-img height="180px" width="250px"></v-img>
                     <v-divider></v-divider>
                     <v-card-title>post-title</v-card-title>
                     <v-card-subtitle>レストラン名</v-card-subtitle>

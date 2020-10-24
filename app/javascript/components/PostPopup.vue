@@ -35,6 +35,17 @@
               <v-col cols="12">
                 <v-textarea v-model="postInfo.description" label="おすすめポイント" required></v-textarea>
               </v-col>
+              <v-col cols="5" class="uploader">
+                <img :src="uploadFile" class="upload-file">
+                <v-icon x-large class="file-down btn" v-show="!imageBtnToggle">mdi-close-circle-outline</v-icon>
+                <v-icon x-large class="file-up btn" v-show="imageBtnToggle" @click="$refs.fileInput.click()">mdi-image-plus</v-icon>
+                <input type="file" @change="onFileChange" ref="fileInput" style="display:none;">
+              </v-col>
+              <!-- <v-col cols="5" class="imageCol mx-auto" @click="$refs.fileInput.click()">
+                <v-icon class="cancel cancel2">mdi-close-circle-outline</v-icon>
+                <img :src="uploadFile">
+                <input type="file" @change="onFileChange" ref="fileInput" style="display:none;">
+              </v-col> -->
             </v-row>
           </v-container>
         </v-card-text>
@@ -77,15 +88,12 @@ export default {
                 description: "",
                 food_picture: "",
             },
+            isSelectedFile: false,
+            uploadFile: '',
+            imageBtnToggle: true,
         }
     },
     methods: {
-        selectRestaurant(index) {
-            console.log(index);
-            this.saerch_name = this.restaurants[index].name;
-            this.restaurantInfo = this.restaurants[index];
-            this.searching = false;
-        },
         searchReastaurant(){
             const url = process.env.RESTAURANT_URL;
             const api = process.env.RESTAURANT_API;
@@ -99,6 +107,21 @@ export default {
                 .catch(erro => {
                     console.log(erro);
                 })
+        },
+        onFileChange(e){
+          let selectFile = e.target.files;
+          let reader = new FileReader();
+          reader.onload = (e) => {
+            console.log(e);
+            this.uploadFile = e.target.result
+          }
+          reader.readAsDataURL(selectFile[0]);
+          this.imageBtnToggle = !this.imageBtnToggle;
+        },
+        selectRestaurant(index) {
+            this.saerch_name = this.restaurants[index].name;
+            this.restaurantInfo = this.restaurants[index];
+            this.searching = false;
         },
         createPost(){
             const formData = new FormData();
@@ -134,8 +157,18 @@ export default {
 
 <style scoped>
 .float-btn {
-    position: fixed;
+  position: fixed;
 	bottom: 50px;
-    right: 30px;
+  right: 30px;
+}
+.uploader {
+  position: relative;
+}
+.btn {
+  position: absolute;
+  top: -20px;
+}
+.btn:hover {
+  cursor: pointer;
 }
 </style>
