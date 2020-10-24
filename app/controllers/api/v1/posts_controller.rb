@@ -22,12 +22,41 @@ class Api::V1::PostsController < ApiController
   end
 
   def create
-    @post = current_api_user.posts.new(post_params)
-    if @post.save
-      render json: { status: 'SUCCESS', message: "Created!", data: @post }
+    # @post = current_api_user.posts.new(post_params)
+    # if @post.save
+    #   render json: { status: 'SUCCESS', message: "Created!", data: @post }
+    # else
+    #   render json: { status: 'FAILURE', message: 'Not created!', data: @post.errors }
+    # end
+
+    restaurant = Restaurant.new(restaurant_params)
+    post = restaurant.posts.build(post_params)
+    post.user_id = current_api_user.id
+
+    if restaurant.save
+      if post.save
+        render json: { message: "Restaurant and Post are created" }
+      else
+        render json: { message: "Restaurant created, but Post isn't created"}
+      end
     else
-      render json: { status: 'FAILURE', message: 'Not created!', data: @post.errors }
+      if post.save
+        render json: { message: "Just post created"}
+      else
+        render json: { message: "Restaurant and Post aren't created" }
+      end
     end
+    # if restaurant.save
+    #   post = restaurant.Post.new(post_params)
+    #   if post.save
+    #     posts = Post.all
+    #     render json: { status: "SUCCESS", message: "Post and Restaurant created!", data: posts }
+    #   else
+    #     render json: { status: "Failed", message: "Post isn't created!"}
+    #   end
+    # else
+
+    # end
   end
 
   def edit
@@ -41,7 +70,11 @@ class Api::V1::PostsController < ApiController
 
   private
     def post_params
-      params.require(:post).permit(:title, :description, :times, :images, :restaurant_name, :restaurant_id)
+      params.require(:postInfo).permit(:title, :description,  :food_picture,)
+    end
+
+    def restaurant_params
+      params.require(:restaurantInfo).permit(:name, :address, :url, :restaurant_image, :tel, :opentime, :latitude, :longitude, :id)
     end
 
     def set_post

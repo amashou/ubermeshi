@@ -11,6 +11,9 @@
           <p>フォロー：</p>
           <p>フォローワー：</p>
         </v-flex>
+        <v-flex class="mt-4 mb-3">
+          <Popup />
+        </v-flex>
       </v-layout>
       <v-divider></v-divider>
         <v-list>
@@ -41,12 +44,16 @@
 </template>
 
 <script>
+import Popup from './components/PostPopup';
+
 export default {
+  components: { Popup },
   data: function () {
     return {
       drawer: null,
       links: [
         { icon: 'mdi-logout-variant', text: "ログアウト", route: '/'},
+        { icon: 'mdi-login-variant', text: "ログイン", route: '/login'},
         { icon: 'mdi-notebook-edit', text: "新規投稿", route: '/posts/new'},
         { icon: 'mdi-heart', text: "フォロー", route: '/'},
       ]

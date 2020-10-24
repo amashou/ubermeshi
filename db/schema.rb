@@ -32,9 +32,7 @@ ActiveRecord::Schema.define(version: 2020_10_22_111351) do
     t.integer "restaurant_id"
     t.string "title"
     t.string "description"
-    t.string "restaurant_name"
-    t.integer "times"
-    t.string "images"
+    t.string "food_picture"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -77,7 +75,7 @@ ActiveRecord::Schema.define(version: 2020_10_22_111351) do
     t.datetime "confirmation_sent_at"
     t.string "unconfirmed_email"
     t.string "name"
-    t.string "image"
+    t.string "thumbnail"
     t.string "email"
     t.text "tokens"
     t.datetime "created_at", null: false

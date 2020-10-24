@@ -5,8 +5,7 @@
         <v-form @submit.prevent="createPost">
             <v-text-field v-model="post.title" label="タイトル"></v-text-field>
             <v-text-field v-model="post.description" label="ウバポイント"></v-text-field>
-            <v-text-field v-model="post.times" label="利用回数"></v-text-field>
-            <v-text-field v-model="restaurant_name" @change="searchReastaurant" label="店舗名"></v-text-field>
+            <!-- <v-text-field v-model="restaurant_name" @change="searchReastaurant" label="店舗名"></v-text-field> -->
             <v-btn type="submit">投稿</v-btn>
         </v-form>
         <p>候補から選択してください</p>
@@ -33,8 +32,7 @@ export default {
            post: {
                title: "",
                description: "",
-               times: "",
-               images: "",
+               food_picture: "",
                restaurant_id: ""
            },
            restaurants:[],
@@ -66,7 +64,6 @@ export default {
             const api = process.env.RESTAURANT_API;
             let params = '&name=' + this.restaurant_name;
             console.log("url==" + url + "api===" +  api);
-
             axios.get(url + api + params)
                 .then((response) => {
                     console.log(response.data.rest);
@@ -85,24 +82,19 @@ export default {
             formData.append('restaurantInfo[tel]', this.restaurantInfo.tel)
             formData.append('restaurantInfo[opentime]', this.restaurantInfo.opentime)
             formData.append('restaurantInfo[latitude]', this.restaurantInfo.latitude)
-            formData.append('restaurantInfo[longitude]', this.restaurantInfo.longitude)
+            formData.append('postInfo[title]', this.postInfo.title)
+            formData.append('postInfo[description]', this.postInfo.description)
+            formData.append('postInfo[food_picture]', this.postInfo.food_picture)
             console.log(formData);
-            axiosAuth.post('/restaurants', formData)
-                .then((response) => {
+            axiosAuth.post('/posts', formData)
+                .then(res => {
                     console.log('this is response from restaurantCreate');
-                    console.log(response);
-                    this.post.restaurant_id = response.data.data.id
-                    this.post.images = response.data.data.restrant_image
+                    console.log(res);
+                    this.post.restaurant_id = res.data.data.id
+                    this.post.images = res.data.data.restrant_image
                     console.log(this.post);
                     axiosAuth.post('/posts', this.post)
-                        .then((response) => {
-                            console.log('this is response from postCreate');
-                            console.log(response);
-                            this.$router.push({ name: 'Top' });
-                        })
-                        .catch((errors) => {
-                            console.log(errors);
-                        })
+                    this.$router.push({ name: 'Top' });
                 })
                 .catch((errors) => {
                     console.log(errors);
