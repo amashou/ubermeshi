@@ -6,8 +6,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   include DeviseTokenAuth::Concerns::User
-
-  mount_uploader :image, ImageUploader
+  mount_uploader :thumbnail, PictureUploader
   has_many :posts
   has_many :favorites
   has_many :favorite_posts, through: :favorites, source: :post

@@ -19,22 +19,26 @@
                     <v-chip class="ma-2" outlined route :to="{ name: 'PostDetail', params: {id: post.id} }">more info</v-chip>
                 </v-card>
             </v-flex>
-            <v-btn fab color="pink" dark class="mr-3 float-btn" @click="dialog = !dialog">
+            <Popup />
+            <!-- <v-btn fab color="pink" dark class="mr-3 float-btn" @click="dialog = !dialog">
                 <v-icon>mdi-plus</v-icon>
-            </v-btn>
+            </v-btn> -->
         </v-layout>
     </v-container>
 </template>
 
 <script>
 import axios from '../axios-auth.js';
+import Popup from '../components/PostPopup';
 
 export default {
+    components: { Popup },
     data(){
         return{
             item: 1,
             posts: [],
-            items:['一位の投稿',　'二位の投稿', '三位の投稿']
+            items:['一位の投稿',　'二位の投稿', '三位の投稿'],
+            dialog: false,
         }
     },
     computed: {
@@ -59,10 +63,5 @@ export default {
 </script>
 
 <style scoped>
-.float-btn {
-    position: fixed;
-	bottom: 50px;
-    right: 30px;
-}
 
 </style>

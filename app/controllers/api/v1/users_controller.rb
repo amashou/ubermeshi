@@ -30,7 +30,7 @@ class Api::V1::UsersController < ApiController
 
   private
   def user_params
-    params.require(:user).permit(:name, :email, :image, :profile_comment, :ubered_count)
+    params.require(:user).permit(:name, :email, :thumbnail, :profile_comment, :ubered_count)
   end
   
   def set_user

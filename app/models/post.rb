@@ -1,5 +1,5 @@
 class Post < ApplicationRecord
-    mount_uploader :images, ImageUploader
+    mount_uploader :food_picture, PictureUploader
     belongs_to :user
     belongs_to :restaurant
 
