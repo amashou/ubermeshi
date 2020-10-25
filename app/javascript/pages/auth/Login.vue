@@ -1,13 +1,19 @@
 <template>
     <v-container>
-        <v-card max-width="500px" class="mx-auto my-16" flat>
-            <h3>ubermeshiへようこそ</h3>
-            <p>ログイン</p>
-        <v-form @submit.prevent="login">
-            <v-text-field v-model="userInfo.email" label="Email" :rules="emailRules"></v-text-field>
-            <v-text-field v-model="userInfo.password" label="Password" :rules="passwordRules"></v-text-field>
-            <v-btn type="submit">送信</v-btn>
-        </v-form>
+        <v-card max-width="500px" class="mx-auto my-16" flat color="primary">
+            <v-card-title>ubermeshiへようこそ</v-card-title>
+            <v-card-text>ログイン</v-card-text>
+            <v-form @submit.prevent="login">
+                <v-text-field v-model="userInfo.email" label="Email" :rules="emailRules" color="secondary"></v-text-field>
+                <v-text-field v-model="userInfo.password" label="Password" :rules="passwordRules" :type="show ? 'text' : 'password'" 
+                    @click:append="show = !show" :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'" color="accent">
+                </v-text-field>
+                <v-col class="d-flex flex-row-reverse">
+                    <v-btn type="submit" color="secondary" class="ml-2" @click="login">ログイン</v-btn>
+                    <v-btn type="submit" color="secondary" class="ml-2" route :to="{ name: 'Signup' }">新規登録へ</v-btn>
+                    <v-btn type="submit" color="secondary" class="ml-2" route :to="{ name: 'Top' }">Topへ</v-btn>
+                </v-col>
+            </v-form>
         </v-card>
     </v-container>
 </template>
@@ -18,6 +24,7 @@ import axios from 'axios';
 export default {
     data(){
         return{
+           show: false,
            userInfo: {
                email: "",
                password: ""
