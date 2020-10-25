@@ -1,13 +1,21 @@
 <template>
     <v-container>
-        <v-card max-width="500px" class="mx-auto my-16" flat>
-            <h3>ubermeshoへようこそ</h3>
-            <p>新規登録</p>
+        <v-card max-width="400px" class="mx-auto my-16" flat color="primary">
+            <v-card-title>ubermeshiへようこそ</v-card-title>
+            <v-card-text>新規登録</v-card-text>
             <v-form @submit.prevent="signUp">
-            <v-text-field v-model="userInfo.email" label="Email" :rules="emailRules"></v-text-field>
-            <v-text-field v-model="userInfo.password" label="Password" :rules="passwordRules"></v-text-field>
-            <v-text-field v-model="userInfo.password_confirmation" label="Password_confirmation" :rules="passwordConfirmationRules"></v-text-field>
-            <v-btn type="submit">登録</v-btn>
+                <v-text-field v-model="userInfo.email" label="Email" :rules="emailRules" color="secondary"></v-text-field>
+                <v-text-field v-model="userInfo.password" label="Password" :rules="passwordRules" :type="show ? 'text' : 'password'" 
+                    @click:append="show = !show" :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'" color="secondary">
+                </v-text-field>
+                <v-text-field v-model="userInfo.password_confirmation" label="Password_confirmation" :rules="passwordConfirmationRules" :type="show ? 'text' : 'password'" 
+                    @click:append="show = !show" :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'" color="secondary">
+                </v-text-field>
+                <v-col class="d-flex flex-row-reverse">
+                    <v-btn type="submit" color="secondary" class="ml-2" @click="signUp">登録</v-btn>
+                    <v-btn type="submit" color="secondary" class="ml-2" route :to="{ name: 'Login' }">ログインへ</v-btn>
+                    <v-btn type="submit" color="secondary" class="ml-2" route :to="{ name: 'Top' }">Topへ</v-btn>
+                </v-col>
         </v-form>
         </v-card>
     </v-container>
@@ -19,6 +27,7 @@ import axios from 'axios';
 export default {
     data(){
         return{
+           show: false,
            userInfo: {
                email: "",
                password: "",

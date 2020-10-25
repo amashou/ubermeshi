@@ -10,19 +10,16 @@
         <v-layout row wrap class="px-2 grey--text">
             <v-flex v-for="(post,index) in posts" :key="index" md4 sm6 xs11 mx-auto>
                 <v-card class="mx-4 mb-4" color="#EEE" raised>
-                    <v-img height="180px" width="250px"></v-img>
+                    <v-img :src="post.food_picture.url" height="200px" cover></v-img>
                     <v-divider></v-divider>
-                    <v-card-title>post-title</v-card-title>
-                    <v-card-subtitle>レストラン名</v-card-subtitle>
+                    <v-card-title>タイトルがはいる{{post.title}}</v-card-title>
+                    <v-card-subtitle>お店の情報がはいる--{{post.name}}</v-card-subtitle>
                     <v-divider></v-divider>
-                    <v-card-text>ウバポイント</v-card-text>
-                    <v-chip class="ma-2" outlined route :to="{ name: 'PostDetail', params: {id: post.id} }">more info</v-chip>
+                    <v-card-text>おすすめポイントおすすめポイントおすすめポイントおすすめポイントおすすめポイントおすすめポイント</v-card-text>
+                    <v-chip color="accent" right class="ma-3" outlined route :to="{ name: 'PostDetail', params: {id: post.id} }">more info</v-chip>
                 </v-card>
             </v-flex>
             <Popup />
-            <!-- <v-btn fab color="pink" dark class="mr-3 float-btn" @click="dialog = !dialog">
-                <v-icon>mdi-plus</v-icon>
-            </v-btn> -->
         </v-layout>
     </v-container>
 </template>
@@ -47,8 +44,6 @@ export default {
         }
     },
     created(){
-        console.log(process.env.RESTAURANT_URL);
-        // axios.interceptors.request.eject(0);
         axios.get('posts')
         .then((response) => {
             console.log('This is top view without access-token');

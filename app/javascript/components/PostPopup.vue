@@ -19,7 +19,10 @@
           <v-container>
             <v-row>
               <v-col cols="12">
-                <v-text-field v-model="saerch_name" @change="searchReastaurant" label="店舗名"></v-text-field>
+                <!-- <v-text-field v-model="saerch_name" @change="searchReastaurant" label="店舗名" clearable> -->
+                <v-text-field v-model="saerch_name" label="店舗名" clear-icon="mdi-close-circle"
+                clearable　append-outer-icon="mdi-magnify" @click:append-outer="searchReastaurant" required>
+                </v-text-field>
               </v-col>
               <template v-if="searching">
               <v-col md="6" sm="12" v-for="(restaurant, index) in restaurants" :key="restaurant.index">
@@ -32,20 +35,18 @@
               <v-col cols="12">
                 <v-text-field v-model="postInfo.title" label="タイトル" required></v-text-field>
               </v-col>
-              <v-col cols="12">
-                <v-textarea v-model="postInfo.description" label="おすすめポイント" required></v-textarea>
+              <v-col cols="12" pb0>
+                <v-textarea label="おすすめポイント" auto-grow rows="1"></v-textarea>
               </v-col>
               <v-col cols="5" class="uploader">
-                <img :src="uploadFile" class="upload-file">
-                <v-icon x-large class="file-down btn" v-show="!imageBtnToggle">mdi-close-circle-outline</v-icon>
-                <v-icon x-large class="file-up btn" v-show="imageBtnToggle" @click="$refs.fileInput.click()">mdi-image-plus</v-icon>
+                <v-sheet class="preview">
+                  <v-icon x-large class="file-up btn" v-show="imageBtnToggle" @click="$refs.fileInput.click()">mdi-image-plus</v-icon>
+                  <v-icon x-large class="file-down btn" v-show="!imageBtnToggle" @click="fileDown">mdi-close-circle-outline</v-icon>
+                  <v-img :src="uploadFile" class="upload-file" max-height="300" max-width="350" contain>
+                  </v-img>
                 <input type="file" @change="onFileChange" ref="fileInput" style="display:none;">
+                </v-sheet>
               </v-col>
-              <!-- <v-col cols="5" class="imageCol mx-auto" @click="$refs.fileInput.click()">
-                <v-icon class="cancel cancel2">mdi-close-circle-outline</v-icon>
-                <img :src="uploadFile">
-                <input type="file" @change="onFileChange" ref="fileInput" style="display:none;">
-              </v-col> -->
             </v-row>
           </v-container>
         </v-card-text>
@@ -94,6 +95,13 @@ export default {
         }
     },
     methods: {
+        fileDown(){
+          let img = document.querySelector('upload-file');
+          img.remove();
+          this.postInfo.food_picture = null;
+          this.uploadFile = null;
+          this.imageBtnToggle = !this.imageBtnToggle;
+        },
         searchReastaurant(){
             const url = process.env.RESTAURANT_URL;
             const api = process.env.RESTAURANT_API;
@@ -117,6 +125,7 @@ export default {
           }
           reader.readAsDataURL(selectFile[0]);
           this.imageBtnToggle = !this.imageBtnToggle;
+          this.postInfo.food_picture = selectFile[0];
         },
         selectRestaurant(index) {
             this.saerch_name = this.restaurants[index].name;
@@ -167,6 +176,11 @@ export default {
 .btn {
   position: absolute;
   top: -20px;
+}
+.file-down {
+  position: absolute;
+  top: -10px;
+  z-index: inherit;
 }
 .btn:hover {
   cursor: pointer;
