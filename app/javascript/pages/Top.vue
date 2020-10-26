@@ -44,7 +44,7 @@ export default {
         }
     },
     created(){
-        axios.get('posts')
+        axios.get('/api/v1/posts')
         .then((response) => {
             console.log('This is top view without access-token');
             console.log(response);

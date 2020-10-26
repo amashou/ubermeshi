@@ -20,7 +20,7 @@ export default {
         }
     },
     created(){
-        axios.get('/api/v1/users',
+        axios.get('/api/v1/posts',
         {
             headers: {
                     "content-type": "multipart/form-data",
