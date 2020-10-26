@@ -9,7 +9,7 @@
                     @click:append="show = !show" :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'" color="accent">
                 </v-text-field>
                 <v-col class="d-flex flex-row-reverse">
-                    <v-btn type="submit" color="secondary" class="ml-2" @click="login">ログイン</v-btn>
+                    <v-btn type="submit" color="secondary" class="ml-2">ログイン</v-btn>
                     <v-btn type="submit" color="secondary" class="ml-2" route :to="{ name: 'Signup' }">新規登録へ</v-btn>
                     <v-btn type="submit" color="secondary" class="ml-2" route :to="{ name: 'Top' }">Topへ</v-btn>
                 </v-col>
