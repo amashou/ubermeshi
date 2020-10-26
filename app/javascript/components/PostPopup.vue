@@ -147,7 +147,7 @@ export default {
             formData.append('postInfo[description]', this.postInfo.description)
             formData.append('postInfo[food_picture]', this.postInfo.food_picture)
             console.log(formData);
-            axiosAuth.post('/posts', formData)
+            axiosAuth.post('/api/v1/posts', formData)
                 .then(res => {
                     console.log('this is response');
                     console.log(res);
