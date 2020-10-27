@@ -53,6 +53,7 @@ export default {
       drawer: null,
       links: [
         { icon: 'mdi-logout-variant', text: "ログアウト", route: '/'},
+        { icon: 'mdi-logout-variant', text: "新規登録", route: '/signup'},
         { icon: 'mdi-login-variant', text: "ログイン", route: '/login'},
         { icon: 'mdi-notebook-edit', text: "新規投稿", route: '/posts/new'},
         { icon: 'mdi-heart', text: "フォロー", route: '/'},
