@@ -1,82 +1,61 @@
 <template>
-    <v-main>
-        <v-container>
-            <v-card-title>詳細ページ</v-card-title>
-            <v-row>
-                <v-col cols="4" v-for="n in 3" :key="n">
-                    <v-card>
-                        <v-img height="200px" tile></v-img>
+        <v-container class="pb-12">
+            <v-list color="primary">
+                <v-list-item>
+                    <v-list-item-avatar color="grey"></v-list-item-avatar>
+                    <v-list-content>
+                        <v-list-item-title>ユーザーネーム{{user.name}}</v-list-item-title>
+                        <v-list-item-subtitle>ユーザーステータス{{user.status}}</v-list-item-subtitle>
+                    </v-list-content>
+                </v-list-item>
+            </v-list>
+            <v-row class="mb-10">
+                <v-flex md6 xs12>
+                    <v-img></v-img>
+                </v-flex>
+                <v-flex md6 xs11 class="mx-auto pr-5">
+                    <v-card height="400px" class="pa-5">
+                        <v-card-title>タイトル{{ post.title }}</v-card-title>
+                        <v-card-text>description{{ post.description }}</v-card-text>
+                        <v-btn class="ma-2 like-btn" dark color="secondary" @click="favorite" absolute bottom><v-icon>mdi-thumb-up</v-icon>いいね:</v-btn>
                     </v-card>
-                </v-col>
+                </v-flex>
             </v-row>
             <v-row>
-                <v-col cols="4">
-                     <v-img height="200" label="サムネイル" rounded><p>サムネイルが入る</p></v-img>
-                </v-col>
-                <v-col cols="8">
-                    <v-card-title>{{post.restaurant_name}}</v-card-title>
-                    <v-card-subtitle>{{post.title}}</v-card-subtitle>
-                    <v-card-text>{{post.description}}</v-card-text>
-                    <v-card-text>いいね数：{{favorites_count}}</v-card-text>
-                </v-col>
+                <v-flex md6 xs11 class="mx-auto">
+                    <v-card class="px-10">
+                        <v-card-title>コメント</v-card-title>
+                    <v-list>
+                        <template v-for="n in 6">
+                            <v-list-item :key="n">
+                                <v-list-item-avatar color="grey darken-1"></v-list-item-avatar>
+                                <v-list-item-content>
+                                    <v-list-item-title>Message {{ n }}</v-list-item-title>
+                                    <v-list-item-subtitle>メッセージ一覧</v-list-item-subtitle>
+                                </v-list-item-content>
+                            </v-list-item>
+                            <v-divider v-if="n !== 6" :key="`divider-${n}`" inset></v-divider>
+                        </template>
+                    </v-list>
+                    </v-card>
+                </v-flex>
+                <v-flex>
+                    <v-card class="px-5" color="primary" outlined>
+                        <v-card-title class="text-center">お店情報</v-card-title>
+                        <v-card-text>名前：</v-card-text>
+                        <v-card-text>住所：</v-card-text>
+                        <v-card-text>営業時間：</v-card-text>
+                        <v-card-text>電話番号：</v-card-text>
+                        <v-card-actions><v-chips>詳しくはこちら</v-chips></v-card-actions>
+                    </v-card>
+                </v-flex>
             </v-row>
-            <v-row>
-                <v-col>
-                    <v-card-actions>
-                    <v-spacer></v-spacer>
-                        <v-btn class="ma-2" text icon color="blue lighten-2" @click="favorite"><v-icon>mdi-thumb-up</v-icon></v-btn>
-                        <v-btn class="ma-2" text icon color="red lighten-2" @click="unfavorite"><v-icon>mdi-thumb-down</v-icon></v-btn>
-                        <v-btn><v-icon text color="blue darken-2">mdi-message-text</v-icon></v-btn>
-                        <p v-if="errors">{{errors}}</p>
-                    </v-card-actions>
-                </v-col>
-            </v-row>
-            <!-- <v-row>
-          <v-col
-            v-for="card in cards"
-            :key="card"
-            cols="12"
-          >
-            <v-card>
-              <v-subheader>{{ card }}</v-subheader>
-
-              <v-list two-line>
-                <template v-for="n in 6">
-                  <v-list-item
-
-                    :key="n"
-                  >
-                    <v-list-item-avatar color="grey darken-1">
-                    </v-list-item-avatar>
-
-                    <v-list-item-content>
-                      <v-list-item-title>Message {{ n }}</v-list-item-title>
-
-                      <v-list-item-subtitle>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil repellendus distinctio similique
-                      </v-list-item-subtitle>
-                    </v-list-item-content>
-                  </v-list-item>
-
-                  <v-divider
-                    v-if="n !== 6"
-                    :key="`divider-${n}`"
-                    inset
-                  ></v-divider>
-                </template>
-              </v-list>
-            </v-card>
-          </v-col>
-            </v-row> -->
-            <v-form @submit.prevent="comment">
+            
+            <!-- <v-form @submit.prevent="comment">
                 <v-text-field label="コメント" v-model="formComment"></v-text-field>
                 <v-btn type="submit">コメントする</v-btn>
-            </v-form>
-            <ul v-if="comments">
-                <li v-for="(comment, index) in comments" :key="index">コメント：{{comment.comment}}</li>
-            </ul>
+            </v-form> -->
         </v-container>
-    </v-main>
 </template>
 
 <script>
@@ -85,7 +64,7 @@ import axios from '../../axios-auth';
 export default {
     data(){
         return{
-        cards: ['Today', 'Yesterday'],
+        cards: ['Today'],
           post: {},
           restaurant: {},
           user: {},
@@ -157,3 +136,8 @@ export default {
     }
 };
 </script>
+<style scoped>
+.like-btn {
+    right: 30px;
+}
+</style>

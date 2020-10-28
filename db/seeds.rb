@@ -7,7 +7,28 @@
     )
 end
 Restaurant.create(
-    name: "test_restaurant_name"
+    name: "渋谷レストラン",
+    address: "東京都渋谷区1-1-1",
+    tel: '03-1234-5678',
+    opentime: "平日12:00~21:00, 土日祭日10:00~21:00",
+)
+Restaurant.create(
+    name: "新宿レストラン",
+    address: "東京都新宿区1-1-1",
+    tel: '03-1234-5678',
+    opentime: "平日12:00~21:00, 土日祭日10:00~21:00"
+)
+Restaurant.create(
+    name: "千代田レストラン",
+    address: "東京都千代田区1-1-1",
+    tel: '03-1234-5678',
+    opentime: "平日12:00~21:00, 土日祭日10:00~21:00",
+)
+Restaurant.create(
+    name: "港レストラン",
+    address: "東京都港区1-1-1",
+    tel: '03-1234-5678',
+    opentime: "平日12:00~21:00, 土日祭日10:00~21:00",
 )
 5.times do |n|
     Post.create(
@@ -23,6 +44,24 @@ end
 User.create(
     name: "Amashou",
     email: "amano@example.com",
+    password: "password",
+    password_confirmation: "password"
+)
+User.create(
+    name: "Amashou",
+    email: "amano@example.com",
+    password: "password",
+    password_confirmation: "password"
+)
+User.create(
+    name: "Tanaka",
+    email: "tanaka@example.com",
+    password: "password",
+    password_confirmation: "password"
+)
+User.create(
+    name: "Yamada",
+    email: "yamada@example.com",
     password: "password",
     password_confirmation: "password"
 )
