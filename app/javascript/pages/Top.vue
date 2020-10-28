@@ -38,11 +38,6 @@ export default {
             dialog: false,
         }
     },
-    computed: {
-        isLoggedIn() {
-            return this.$store.state.isLoggedIn;
-        }
-    },
     created(){
         axios.get('/api/v1/posts')
         .then((response) => {
