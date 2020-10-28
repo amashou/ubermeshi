@@ -12,8 +12,9 @@
                 <v-card class="mx-4 mb-4" color="#EEE" raised>
                     <v-img :src="post.food_picture.url" height="200px" cover></v-img>
                     <v-divider></v-divider>
-                    <v-card-title>タイトルがはいる{{post.title}}</v-card-title>
-                    <v-card-subtitle>お店の情報がはいる--{{post.name}}</v-card-subtitle>
+                    <v-card-title>タイトル:{{post.title}}</v-card-title>
+                    <v-card-subtitle class="py-3">店名ー{{post.restaurant_name}}</v-card-subtitle>
+                    <v-card-subtitle class="pt-0">住所-{{post.restaurant_address}}</v-card-subtitle>
                     <v-divider></v-divider>
                     <v-card-text>おすすめポイントおすすめポイントおすすめポイントおすすめポイントおすすめポイントおすすめポイント</v-card-text>
                     <v-chip color="accent" right class="ma-3" outlined route :to="{ name: 'PostDetail', params: {id: post.id} }">more info</v-chip>
@@ -34,7 +35,6 @@ export default {
         return{
             item: 1,
             posts: [],
-            items:['一位の投稿',　'二位の投稿', '三位の投稿'],
             dialog: false,
         }
     },
@@ -46,13 +46,31 @@ export default {
     created(){
         axios.get('/api/v1/posts')
         .then((response) => {
-            console.log('This is top view without access-token');
-            console.log(response);
-            this.posts = response.data
+            let responsePostInfo = response.data
+            const MAX_TITLE_LEN = 20;
+            const MAX_ADDRESS_LEN = 30;
+            const MAX_RESTNAME_LEN = 30;
+            let ommitedString = this.ommitedString;
+            responsePostInfo.forEach(function(post, index) {
+                console.log(post.restaurant_address);
+                responsePostInfo[index].title = ommitedString(post.title, MAX_TITLE_LEN, 0);
+                responsePostInfo[index].restaurant_address = ommitedString(post.restaurant_address, MAX_ADDRESS_LEN, 0);
+                responsePostInfo[index].restaurant_name = ommitedString(post.restaurant_name, MAX_RESTNAME_LEN, 0);
+            });
+            this.posts = responsePostInfo;
         })
         .catch((errors) => {
             console.log(errors);
         });
+    },
+    methods: {
+        ommitedString(string='', maxInt, startInt=0) {
+            let stringLength = string === undefined ? 0 : string.length;
+            if(stringLength > maxInt) {
+                return string.substr(startInt, maxInt) + "...";
+            }
+            return string;
+        }
     }
 }
 </script>

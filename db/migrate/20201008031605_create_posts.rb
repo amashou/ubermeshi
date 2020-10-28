@@ -6,6 +6,8 @@ class CreatePosts < ActiveRecord::Migration[5.2]
       t.string :title
       t.string :description
       t.string :food_picture
+      t.string :restaurant_name
+      t.string :restaurant_address
 
       t.timestamps
     end

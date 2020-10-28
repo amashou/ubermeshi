@@ -57,6 +57,11 @@ export default {
         { icon: 'mdi-login-variant', text: "ログイン", route: '/login'},
         { icon: 'mdi-notebook-edit', text: "新規投稿", route: '/posts/new'},
         { icon: 'mdi-heart', text: "フォロー", route: '/'},
+        { icon: 'mdi-heart', text: "フォローワー", route: '/'},
+        { icon: 'mdi-heart', text: "いいね", route: '/'},
+        { icon: 'mdi-heart', text: "通知", route: '/'},
+
+
       ]
     }
   },

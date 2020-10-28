@@ -8,8 +8,8 @@ class Api::V1::PostsController < ApiController
   end
   
   def index
-    @posts = Post.all
-    render json: @posts
+    posts = Post.all
+    render json: posts
   end
 
   def show
@@ -22,13 +22,6 @@ class Api::V1::PostsController < ApiController
   end
 
   def create
-    # @post = current_api_user.posts.new(post_params)
-    # if @post.save
-    #   render json: { status: 'SUCCESS', message: "Created!", data: @post }
-    # else
-    #   render json: { status: 'FAILURE', message: 'Not created!', data: @post.errors }
-    # end
-
     restaurant = Restaurant.new(restaurant_params)
     post = restaurant.posts.build(post_params)
     post.user_id = current_api_user.id
@@ -46,17 +39,6 @@ class Api::V1::PostsController < ApiController
         render json: { message: "Restaurant and Post aren't created" }
       end
     end
-    # if restaurant.save
-    #   post = restaurant.Post.new(post_params)
-    #   if post.save
-    #     posts = Post.all
-    #     render json: { status: "SUCCESS", message: "Post and Restaurant created!", data: posts }
-    #   else
-    #     render json: { status: "Failed", message: "Post isn't created!"}
-    #   end
-    # else
-
-    # end
   end
 
   def edit
@@ -70,7 +52,7 @@ class Api::V1::PostsController < ApiController
 
   private
     def post_params
-      params.require(:postInfo).permit(:title, :description,  :food_picture,)
+      params.require(:postInfo).permit(:title, :description, :food_picture, :restaurant_name, :restaurant_address)
     end
 
     def restaurant_params
