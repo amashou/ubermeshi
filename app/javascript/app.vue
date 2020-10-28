@@ -8,15 +8,12 @@
             <img src="#">
           </v-avatar>
           <p class="subheading mt-1 grey--text">Username</p>
-          <p>フォロー：</p>
-          <p>フォローワー：</p>
         </v-flex>
         <v-flex class="mt-4 mb-3">
-          <Popup />
         </v-flex>
       </v-layout>
       <v-divider></v-divider>
-        <v-list>
+        <v-list v-if="isAuthenticated">
           <v-list-item v-for="link in links" :key="link.text" route :to="link.route">
             <v-list-item-icon>
               <v-icon>{{ link.icon }}</v-icon>
@@ -26,6 +23,16 @@
             </v-list-item-content>
           </v-list-item>
         </v-list>
+        <v-list>
+           <v-list-item v-if="isAuthenticated" @click="logout">
+            <v-list-item-icon><v-icon>mdi-logout</v-icon></v-list-item-icon>
+            <v-list-item-content><v-list-item-title>ログアウト</v-list-item-title></v-list-item-content>
+           </v-list-item>
+           <v-list-item v-else route :to="{ name: 'Login'}">
+            <v-list-item-icon><v-icon>mdi-login</v-icon></v-list-item-icon>
+            <v-list-item-content><v-list-item-title>ログイン</v-list-item-title></v-list-item-content>
+          </v-list-item>
+        </v-list>
     </v-navigation-drawer>
 
     <v-app-bar color="secondary" dark app>
@@ -33,9 +40,6 @@
       <v-toolbar-title class="primary--text text--uppercase pa-0">
         <router-link :to="{ path: '/' }"><span class="app-title">UberMeshi</span></router-link>
       </v-toolbar-title>
-      <!-- <router-link :to="{ path: '/' }"><v-btn outlined fab>Topへ</v-btn></router-link> -->
-      <!-- <router-link :to="{ path: '/posts/new' }" class="mx-2"><v-chip color="accent" class="pa-4"><v-icon left>mdi-text-box-plus-outline</v-icon><span>投稿する</span></v-chip></router-link> -->
-      <!-- <router-link :to="{ path: '/login' }"><v-btn outlined><v-icon left>mdi-login</v-icon><span>ログイン</span></v-btn></router-link> -->
     </v-app-bar>
     <v-main>
         <router-view></router-view>
@@ -52,17 +56,32 @@ export default {
     return {
       drawer: null,
       links: [
-        { icon: 'mdi-logout-variant', text: "ログアウト", route: '/'},
-        { icon: 'mdi-logout-variant', text: "新規登録", route: '/signup'},
-        { icon: 'mdi-login-variant', text: "ログイン", route: '/login'},
         { icon: 'mdi-notebook-edit', text: "新規投稿", route: '/posts/new'},
         { icon: 'mdi-heart', text: "フォロー", route: '/'},
+        { icon: 'mdi-heart', text: "フォローワー", route: '/'},
+        { icon: 'mdi-heart', text: "いいね", route: '/'},
+        { icon: 'mdi-heart', text: "通知", route: '/'},
       ]
     }
   },
   computed: {
-    loginStatus() {
-      return this.$store.state.isLoggedIn
+      isAuthenticated() {
+          return (localStorage.getItem("access-token") !== null && localStorage.getItem("access-token") !== '');
+      }
+  },
+  created() {
+    console.log(localStorage.getItem("access-token") !== null);
+    console.log(localStorage.getItem("access-token") !== '')
+    console.log(localStorage.getItem("access-token") !== null && localStorage.getItem("access-token") !== '');
+  },
+  methods: {
+    logout(){
+      console.log('logout');
+      localStorage.setItem("access-token", '');
+      localStorage.setItem("uid", '');
+      localStorage.setItem("client", '');
+      localStorage.setItem("expiry", '');
+      localStorage.setItem("token-type", '');
     }
   }
 }

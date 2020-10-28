@@ -33,6 +33,8 @@ ActiveRecord::Schema.define(version: 2020_10_22_111351) do
     t.string "title"
     t.string "description"
     t.string "food_picture"
+    t.string "restaurant_name"
+    t.string "restaurant_address"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

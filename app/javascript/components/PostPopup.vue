@@ -7,7 +7,7 @@
       max-width="600px"
     >
       <template v-slot:activator="{ on, attrs }">
-            <v-btn fab color="pink" dark class="mr-3 float-btn" v-bind="attrs" v-on="on">
+            <v-btn fab x-large color="pink" dark class="mr-3 float-btn" v-bind="attrs" v-on="on">
                 <v-icon>mdi-plus</v-icon>
             </v-btn>
       </template>
@@ -87,7 +87,7 @@ export default {
             postInfo: {
                 title: "",
                 description: "",
-                food_picture: "",
+                food_picture: ""
             },
             isSelectedFile: false,
             uploadFile: '',
@@ -146,6 +146,8 @@ export default {
             formData.append('postInfo[title]', this.postInfo.title)
             formData.append('postInfo[description]', this.postInfo.description)
             formData.append('postInfo[food_picture]', this.postInfo.food_picture)
+            formData.append('postInfo[restaurant_name]', this.restaurantInfo.name)
+            formData.append('postInfo[restaurant_address]', this.restaurantInfo.address)
             console.log(formData);
             axiosAuth.post('/api/v1/posts', formData)
                 .then(res => {
