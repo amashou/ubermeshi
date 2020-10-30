@@ -29,6 +29,7 @@ Restaurant.create(
     address: "東京都港区1-1-1",
     tel: '03-1234-5678',
     opentime: "平日12:00~21:00, 土日祭日10:00~21:00",
+    url: '///'
 )
 5.times do |n|
     Post.create(

@@ -1,6 +1,5 @@
 <template>
   <v-app>
-
     <v-navigation-drawer max-width="300" v-model="drawer" color="grey lighten-2" temporary app>
       <v-layout column align-center>
         <v-flex class="mt-5">
@@ -14,7 +13,7 @@
       </v-layout>
       <v-divider></v-divider>
         <v-list v-if="isAuthenticated">
-          <v-list-item v-for="link in links" :key="link.text" route :to="link.route">
+          <v-list-item v-for="link in links" :key="link.text" route :to="{ name: 'Profile'}">
             <v-list-item-icon>
               <v-icon>{{ link.icon }}</v-icon>
             </v-list-item-icon>
@@ -52,36 +51,36 @@ import Popup from './components/PostPopup';
 
 export default {
   components: { Popup },
-  data: function () {
+  data() {
     return {
+      isAuthenticated: false,
       drawer: null,
       links: [
-        { icon: 'mdi-notebook-edit', text: "新規投稿", route: '/posts/new'},
-        { icon: 'mdi-heart', text: "フォロー", route: '/'},
-        { icon: 'mdi-heart', text: "フォローワー", route: '/'},
-        { icon: 'mdi-heart', text: "いいね", route: '/'},
+        { icon: 'mdi-account-circle', text: "プロフィール", route: '/profile'},
         { icon: 'mdi-heart', text: "通知", route: '/'},
       ]
     }
   },
-  computed: {
-      isAuthenticated() {
-          return (localStorage.getItem("access-token") !== null && localStorage.getItem("access-token") !== '');
+  watch: {
+    $route(to, from){
+      if(from.name == 'Login' && localStorage.getItem("access-token") !== null && localStorage.getItem("access-token") !== ''){
+        this.isAuthenticated = true;
       }
+    }
   },
   created() {
-    console.log(localStorage.getItem("access-token") !== null);
-    console.log(localStorage.getItem("access-token") !== '')
-    console.log(localStorage.getItem("access-token") !== null && localStorage.getItem("access-token") !== '');
+    if(localStorage.getItem("access-token") !== null && localStorage.getItem("access-token") !== ''){
+      this.isAuthenticated = true;
+    }
   },
   methods: {
     logout(){
-      console.log('logout');
       localStorage.setItem("access-token", '');
       localStorage.setItem("uid", '');
       localStorage.setItem("client", '');
       localStorage.setItem("expiry", '');
       localStorage.setItem("token-type", '');
+      window.location.reload();
     }
   }
 }

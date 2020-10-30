@@ -8,8 +8,10 @@ import Signup from './pages/auth/Signup.vue';
 import UserIndex from './pages/user/UserIndex.vue';
 import UserDetail from './pages/user/UserDetail.vue';
 import UserEdit from './pages/user/UserEdit.vue';
+import Profile from './pages/user/Profile.vue'
 import PostCreate from './pages/post/PostCreate.vue';
 import PostDetail from './pages/post/PostDetail.vue';
+
 import store from './store';
 
 
@@ -58,6 +60,11 @@ export default new Router({
             path: '/posts/:id',
             name: 'PostDetail',
             component: PostDetail
+        },
+        {
+            path: '/profile',
+            name: 'Profile',
+            component: Profile
         }
     ]
 });
