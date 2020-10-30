@@ -6,10 +6,12 @@ class Api::V1::CommentsController < ApiController
   # end
 
   def create
-    comment = Comment.new( post_id: params[:post_id], user_id: current_api_user.id, comment: comment_params)
-    post = Post.find(params[:post_id])
+    comment = Comment.new(comment_params)
+    comment.user_id = current_api_user.id
+    comment.post_id = params[:post_id]
+    # post = Post.find(params[:post_id])
     if comment.save
-      render json: { status: "SUCCESS", message: "Comment created", comments: post.comments }
+      render json: { status: "SUCCESS", message: "Comment created" }
     else
       render json: { status: "Failed", message: "Not comment created" }
     end
@@ -24,7 +26,7 @@ class Api::V1::CommentsController < ApiController
   private
 
     def comment_params
-      params.permit(:comment)
+      params.permit(:content)
     end
 
 end

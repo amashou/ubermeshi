@@ -70,13 +70,10 @@ export default {
       }
   },
   created() {
-    console.log(localStorage.getItem("access-token") !== null);
-    console.log(localStorage.getItem("access-token") !== '')
     console.log(localStorage.getItem("access-token") !== null && localStorage.getItem("access-token") !== '');
   },
   methods: {
     logout(){
-      console.log('logout');
       localStorage.setItem("access-token", '');
       localStorage.setItem("uid", '');
       localStorage.setItem("client", '');
