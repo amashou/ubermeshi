@@ -51,14 +51,16 @@ export default {
     methods: {
         signUp(){
             axios.post('/api/v1/auth/', this.userInfo)
-                .then((response) => {
-                    console.log(response);
-                    localStorage.setItem("access-token", response.headers["access-token"]);
-                    localStorage.setItem("uid", response.headers.uid);
-                    localStorage.setItem("client", response.headers.client);
-                    localStorage.setItem("expiry", response.headers.expiry);
-                    localStorage.setItem("token-type", response.headers["token-type"]);
+                .then(res => {
+                    console.log(res);
+                    localStorage.setItem("access-token", res.headers["access-token"]);
+                    localStorage.setItem("uid", res.headers.uid);
+                    localStorage.setItem("client", res.headers.client);
+                    localStorage.setItem("expiry", res.headers.expiry);
+                    localStorage.setItem("token-type", res.headers["token-type"]);
+                    localStorage.setItem("id", res.data.data.id);
                     this.$store.dispatch("isLoggedIn", true);
+                    this.$store.dispatch("current_user", res.data.data);
                     this.$router.push({ path: "/" });
                 })
                 .catch((error) => {
