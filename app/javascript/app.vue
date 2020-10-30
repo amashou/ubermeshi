@@ -1,6 +1,5 @@
 <template>
   <v-app>
-
     <v-navigation-drawer max-width="300" v-model="drawer" color="grey lighten-2" temporary app>
       <v-layout column align-center>
         <v-flex class="mt-5">
@@ -52,8 +51,9 @@ import Popup from './components/PostPopup';
 
 export default {
   components: { Popup },
-  data: function () {
+  data() {
     return {
+      isAuthenticated: false,
       drawer: null,
       links: [
         { icon: 'mdi-account-circle', text: "プロフィール", route: '/profile'},
@@ -61,13 +61,17 @@ export default {
       ]
     }
   },
-  computed: {
-      isAuthenticated() {
-          return (localStorage.getItem("access-token") !== null && localStorage.getItem("access-token") !== '');
+  watch: {
+    $route(to, from){
+      if(from.name == 'Login' && localStorage.getItem("access-token") !== null && localStorage.getItem("access-token") !== ''){
+        this.isAuthenticated = true;
       }
+    }
   },
   created() {
-    console.log(localStorage.getItem("access-token") !== null && localStorage.getItem("access-token") !== '');
+    if(localStorage.getItem("access-token") !== null && localStorage.getItem("access-token") !== ''){
+      this.isAuthenticated = true;
+    }
   },
   methods: {
     logout(){
