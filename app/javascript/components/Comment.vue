@@ -3,7 +3,7 @@
         <v-dialog v-model="commentDialog" persistent max-width="550px" class="pa-5">
             <template v-slot:activator="{ on, attrs }">
                 <v-btn absolute right outlined top color="secondary" v-bind="attrs" v-on="on">
-                    <v-icon>mdi-comment-text-multiple-outline</v-icon>
+                    <v-icon>mdi-plus</v-icon>
                     コメント
                 </v-btn>
             </template>

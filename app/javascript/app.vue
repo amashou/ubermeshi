@@ -14,7 +14,7 @@
       </v-layout>
       <v-divider></v-divider>
         <v-list v-if="isAuthenticated">
-          <v-list-item v-for="link in links" :key="link.text" route :to="link.route">
+          <v-list-item v-for="link in links" :key="link.text" route :to="{ name: 'Profile'}">
             <v-list-item-icon>
               <v-icon>{{ link.icon }}</v-icon>
             </v-list-item-icon>
@@ -56,10 +56,7 @@ export default {
     return {
       drawer: null,
       links: [
-        { icon: 'mdi-notebook-edit', text: "新規投稿", route: '/posts/new'},
-        { icon: 'mdi-heart', text: "フォロー", route: '/'},
-        { icon: 'mdi-heart', text: "フォローワー", route: '/'},
-        { icon: 'mdi-heart', text: "いいね", route: '/'},
+        { icon: 'mdi-account-circle', text: "プロフィール", route: '/profile'},
         { icon: 'mdi-heart', text: "通知", route: '/'},
       ]
     }
@@ -79,6 +76,7 @@ export default {
       localStorage.setItem("client", '');
       localStorage.setItem("expiry", '');
       localStorage.setItem("token-type", '');
+      window.location.reload();
     }
   }
 }
