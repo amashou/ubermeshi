@@ -9,7 +9,7 @@ class Api::V1::PostsController < ApiController
   
   def index
     posts = Post.all
-    render json: posts
+    render json: { posts: posts, user: current_api_user }
   end
 
   def show

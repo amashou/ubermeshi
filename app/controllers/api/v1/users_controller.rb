@@ -1,6 +1,6 @@
 class Api::V1::UsersController < ApiController
   before_action :authenticate_api_user!, only: [:update]
-  before_action :set_user, only: [:show, :edit, :update]
+  before_action :set_user, only: [:show, :update]
 
   def index
     @users = User.all
@@ -12,9 +12,6 @@ class Api::V1::UsersController < ApiController
     followings_count = @user.followings.count
     followers_count = @user.followers.count
     render json: { user: @user, followings_count: followings_count, followers_count: followers_count}
-  end
-
-  def edit
   end
 
   def update
