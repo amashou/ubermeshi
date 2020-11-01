@@ -1,30 +1,34 @@
 <template>
     <v-container>
         <v-sheet max-width="600px" class="mx-auto my-12" color="secondary">
-        <v-card tile>
             <v-list color="pink" class="white-text">
                 <v-list-item>
-                    <v-list-item-avatar color="grey"><v-img v-if="userInfo.thumbnail" :src="userInfo.thumbnail.url"></v-img></v-list-item-avatar>
+                    <v-list-item-avatar color="grey" size="62"><v-img v-if="userInfo.thumbnail" :src="userInfo.thumbnail.url"></v-img></v-list-item-avatar>
                     <v-list-item-content>
                         <v-list-item-title class="white--text">{{userInfo.name}}</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
             </v-list>
-            <v-divider></v-divider>
-            <v-text-field :label="userInfo.profile_comment" rules="" v-model="userInfo.profile_comment"></v-text-field>
-            <v-text-field label="userInfo.ubered_count" rules="" v-model="userInfo.ubered_count"></v-text-field>
-            <v-text-field label="userInfo.status" rules="" v-model="userInfo.status"></v-text-field>
-            <!-- <v-card-text>プロフィール：{{userInfo.profile_comment}}</v-card-text>
-            <v-card-text>ステータス：{{userInfo.status}}</v-card-text>
-            <v-card-text>利用回数：{{userInfo.ubered_count}}</v-card-text> -->
-            <v-card-text>最終更新：{{userInfo.updated_at}}</v-card-text>
-            <v-card-actions>
-                <v-btn absolute right color="secondary" rounded class="updateBtn"><v-icon left>mdi-lead-pencil</v-icon>更新</v-btn>
-            </v-card-actions>
-        </v-card>
-        <v-col class="d-flex flex-row-reverse">
-            <v-btn route :to="{ path: '/' }" color="pink" dark rounded class="btn">Topへ</v-btn>
-        </v-col>
+            <v-card tile class="pa-3">
+                <v-sheet>
+                    <v-avatar v-if="uploadedThumbnail" size="62">
+                        <v-img :src="uploadedThumbnail"></v-img>
+                    </v-avatar>
+                    <v-file-input @change="onFileChange" prepend-icon="mdi-camera" label="アイコン" chips></v-file-input>
+                </v-sheet>
+                <v-text-field v-model="userInfo.name" label="名前" outlined clearable></v-text-field>
+                <v-text-field v-model="userInfo.profile_comment" label="自己紹介" outlined clearable></v-text-field>
+                <v-text-field v-model="userInfo.address" label="場所" outlined clearable></v-text-field>
+                <v-select :items="items" label="ステータス" v-model="userInfo.status" outlined></v-select>
+                <v-text-field v-model="userInfo.ubered_count" label="利用回数" :rules="numberRules" outlined></v-text-field>
+                <v-card-text>最終更新：{{userInfo.updated_at}}</v-card-text>
+                <v-card-actions>
+                    <v-btn absolute right color="secondary" rounded class="updateBtn" @click="update"><v-icon left>mdi-lead-pencil</v-icon>更新</v-btn>
+                </v-card-actions>
+            </v-card>
+            <v-col class="d-flex flex-row-reverse">
+                <v-btn route :to="{ path: '/' }" color="pink" dark rounded class="btn">Topへ</v-btn>
+            </v-col>
         </v-sheet>
     </v-container>
 </template>
@@ -36,9 +40,17 @@ import { mapGetters } from 'vuex';
 export default {
     data(){
         return{
+            items: ['イーター', '配達員'],
             userInfo: {},   
             followers_count: '',
-            followings_count: ''
+            followings_count: '',
+            uploadedThumbnail: '',
+            numberRules:[
+                v => {
+                    const num = /^[0-9]+$/;
+                    return num.test(v) || "半角数字で入力してください";
+                }
+            ]
         }
     },
     computed: {
@@ -57,6 +69,33 @@ export default {
         });
     },
     methods: {
+        onFileChange(e){
+            let selectFile = e;
+            let reader = new FileReader();
+            reader.onload = e => {
+                this.uploadedThumbnail = e.target.result;
+            }
+            reader.readAsDataURL(selectFile);
+            this.userInfo.thumbnail = selectFile;
+        },
+        update(){
+            let formData = new FormData();
+            formData.append("user[name]", this.userInfo.name);
+            // formData.append("user[thumbnail]", this.userInfo.thumbnail)
+            formData.append("user[ubered_count]", this.userInfo.ubered_count);
+            formData.append("user[profile_comment]", this.userInfo.profile_comment);
+            formData.append("user[status]", this.userInfo.status);
+            formData.append("user[address]", this.userInfo.address);
+            formData.append("user[thumbnail]", this.userInfo.thumbnail);
+            axios.patch('/api/v1/users/' + this.current_user.id, formData)
+                .then(res => {
+                    console.log(res);
+                    this.$router.push({ path: '/' });
+                })
+                .catch(erro => {
+                    console.log(erro);
+                });
+        }
     }
 }
 </script>

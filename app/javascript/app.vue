@@ -3,8 +3,10 @@
     <v-navigation-drawer max-width="300" v-model="drawer" color="grey lighten-2" temporary app>
       <v-layout column align-center>
         <v-flex class="mt-5">
-          <v-avatar size="100">
-            <img src="#">
+          <v-avatar size="100" v-if="current_user.thumbnail">
+            <img :src="current_user.thumbnail.url">
+          </v-avatar>
+          <v-avatar size="100" v-else color="grey">
           </v-avatar>
           <p class="subheading mt-1 grey--text">{{current_user.name}}</p>
         </v-flex>

@@ -18,9 +18,7 @@ class User < ActiveRecord::Base
   has_many :passive_relationships, class_name: "Relationship", foreign_key: :follower_id
   has_many :followers, through: :passive_relationships, source: :following
 
-  #statusが選択されていること
-  STATUS = { HeavyUser: 0, User: 1, Driver: 2 }
-  enum status: STATUS
+  # enum status: { eater: 0, driver: 1 }
   # validates :status, inclusion: { in: STATUS.keys.concat(STATUS.keys.map(&:to_s)) }, exclusion: { in: [nil] }
   #不正なEmailアドレスが送信されていないこと＋存在していること
   # VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
