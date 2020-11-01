@@ -117,6 +117,7 @@ export default {
                 })
         },
         onFileChange(e){
+          console.log('target is ...', e.target.files);
           let selectFile = e.target.files;
           let reader = new FileReader();
           reader.onload = (e) => {

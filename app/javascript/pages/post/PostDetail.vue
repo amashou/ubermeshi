@@ -74,7 +74,6 @@ export default {
             formComment: "",
             errors: ""
         }
-        // restaurant, user, post, favorites_count, current_user, comments
     },
     created(){
         axios.get('/api/v1/posts/'+ this.$route.params.id)

@@ -15,7 +15,7 @@ class Api::V1::UsersController < ApiController
   end
 
   def update
-    if current_api_user.id == @user.id && @user.update_attribute(user_params)
+    if @user.update_attributes(user_params)
       render json: { status: 'SUCCESS', message: 'updated', data: @user }
     else
       render json: { status: 'SUCCESS', message: 'Not updated', data: @user.errors }
@@ -26,11 +26,11 @@ class Api::V1::UsersController < ApiController
   end
 
   private
-  def user_params
-    params.require(:user).permit(:name, :email, :thumbnail, :profile_comment, :ubered_count)
-  end
-  
-  def set_user
-    @user = User.find(params[:id])
-  end
+    def user_params
+      params.require(:user).permit(:name, :email, :thumbnail, :profile_comment, :ubered_count, :address, :status)
+    end
+    
+    def set_user
+      @user = User.find(params[:id])
+    end
 end
