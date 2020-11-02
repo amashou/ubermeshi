@@ -18,5 +18,7 @@ WORKDIR /myapp
 
 COPY Gemfile Gemfile.lock /myapp/
 
+ENV BUNDLER_VERSION 2.1.4
+RUN gem install bundler
 RUN bundle install
 COPY . /myapp

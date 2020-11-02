@@ -21,6 +21,7 @@ gem 'devise_token_auth'
 gem 'rack-cors'
 gem 'carrierwave'
 gem 'mini_magick', '~> 4.8'
+gem 'active_model_serializers'
 
 
 # See https://github.com/rails/execjs#readme for more supported runtimes

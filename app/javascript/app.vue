@@ -8,7 +8,7 @@
           </v-avatar>
           <v-avatar size="100" v-else color="grey">
           </v-avatar>
-          <p class="subheading mt-1 grey--text">{{current_user.name}}</p>
+          <p class="subheading mt-1 grey--text text-center">{{current_user.name}}</p>
         </v-flex>
         <v-flex class="mt-4 mb-3">
         </v-flex>
@@ -90,6 +90,7 @@ export default {
       localStorage.setItem("id", '');
       this.$store.dispatch("current_user", {});
       this.$store.dispatch("isLoggedIn", false);
+      this.$router.push({ path: "/" });
       window.location.reload();
     }
   }

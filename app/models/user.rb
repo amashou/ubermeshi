@@ -7,10 +7,11 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :validatable
   include DeviseTokenAuth::Concerns::User
   mount_uploader :thumbnail, PictureUploader
-  has_many :posts
-  has_many :favorites
+  has_many :posts, dependent: :destroy
+  has_many :favorites, dependent: :destroy
   has_many :favorite_posts, through: :favorites, source: :post
-  has_many :comments
+  has_many :comments, dependent: :destroy
+  has_many :replys, dependent: :destroy
 
   has_many :active_relationships, class_name: "Relationship", foreign_key: :following_id
   has_many :followings, through: :active_relationships, source: :follower

@@ -13,12 +13,15 @@ class Api::V1::PostsController < ApiController
   end
 
   def show
-    @restaurant = @post.restaurant
-    @user = @post.user
-    @favorites_count = @post.favorites.count
-    @comments = @post.comments.order(updated_at: "DESC")
-    @current_user = current_api_user
-    render json: {post: @post, restaurant: @restaurant, user: @user, favorites_count: @favorites_count, current_user: @current_user, comments: @comments}
+    # @post.comments(:replys)
+    # @favorites_count = @post.favorites.count
+    render json: @post
+    # render json: @post, include: { comments: [:replys] }
+    # @restaurant = @post.restaurant
+    # @user = @post.user
+    # comments = @post.comments.order(updated_at: "DESC")
+    # @current_user = current_api_user
+    # render json: {post: @post, restaurant: @restaurant, user: @user, favorites_count: @favorites_count, current_user: @current_user, comments: comments, replys: @replys}
   end
 
   def create

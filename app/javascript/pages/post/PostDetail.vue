@@ -38,16 +38,20 @@
                         <v-card-title>コメント</v-card-title>
                         <CommentDialog @reflectComment="comments.unshift($event)"></CommentDialog>
                     <v-list color="grey lighten-2">
-                        <v-list-item-group>
-                        <template v-for="(comment,index) in comments">
-                            <v-list-item :key="index">
-                                <v-list-item-content>
-                                    <v-list-item-title>{{comment.content}}</v-list-item-title>
-                                </v-list-item-content>
-                            </v-list-item>
-                            <v-divider v-if="index < comments.length -1" :key="index"></v-divider>
-                        </template>
-                        </v-list-item-group>
+                            <v-list-group v-for="(comment, index) in comments" :key="index">
+                                <template v-slot:activator>
+                                    <v-list-item-content>
+                                        <v-list-item-title class="black--text">{{comment.content}}</v-list-item-title>
+                                    </v-list-item-content>
+                                </template>
+                                <v-list-item class="pb-0">
+                                    <v-list-item-content>
+                                        <v-list-item-title v-for="(reply, index) in comment.replys" :key="index" class="mb-2 pl-3">{{reply.content}}</v-list-item-title>
+                                        <v-textarea v-model="replyMessage" label="返信メッセージ" outlined clearable auto-grow rows="1" class="mt-3"></v-textarea>
+                                        <v-btn @click="sendReply(comment.id, index)" color="secondary" rounded max-width="80px" bottom right>送信</v-btn>
+                                    </v-list-item-content>
+                                </v-list-item>
+                            </v-list-group>
                     </v-list>
                     </v-card>
                 </v-flex>
@@ -58,13 +62,14 @@
 <script>
 import axios from '../../axios-auth';
 import CommentDialog from '../../components/Comment';
+import ReplyDialog from '../../components/Reply';
 
 export default {
-    components: { CommentDialog },
+    components: { CommentDialog, ReplyDialog },
     data(){
         return{
+            replyMessage: '',
             toggleBtn: '',
-            cards: ['Today'],
             post: {},
             restaurant: {},
             user: {},
@@ -72,20 +77,30 @@ export default {
             current_user:{},
             comments: [],
             formComment: "",
-            errors: ""
+            errors: "",
+        }
+    },
+    computed:{
+        newreplys(){
+            return this.replys;
         }
     },
     created(){
         axios.get('/api/v1/posts/'+ this.$route.params.id)
-        // axios.get('/api/v1/posts/')
             .then(res => {
                 console.log('res data is ...',res);
-                this.post = res.data.post;
-                this.restaurant = res.data.restaurant;
-                this.user = res.data.user;
+                this.post.id = res.data.id;
+                this.post.title = res.data.title;
+                this.post.description = res.data.description;
+                this.post.food_picture = res.data.food_picture;
+                this.restaurant = res.data.restaurantInfo;
+                this.user = res.data.userInfo;
                 this.favorites_count = res.data.favorites_count;
-                this.current_user = res.data.current_user;
                 this.comments = res.data.comments;
+                console.log(this.restaurant);
+                console.log(this.user);
+                console.log(this.favorites_count);
+                console.log(this.comments);
             })
             .catch(erro => {
                 console.log(erro);
@@ -119,16 +134,26 @@ export default {
                 .catch((errors) => {
                     console.log(errors);
                 });
+        },
+        sendReply(comment_id, comments_index){
+            let formData = new FormData();
+            formData.append('replyMessage[content]', this.replyMessage);
+            axios.post('/api/v1/posts/' + this.post.id + "/comments/" + comment_id + "/replys", formData)
+                .then(res => {
+                    window.location.reload();
+                    // リダイレクトしなくても返信が反映するようにする
+                    // this.comments[comments_index].replys.unshift({contnet: this.replyMessage});
+                })
+                .catch(erro => {
+                    console.log(erro);
+                })
         }
     }
 };
 </script>
 <style scoped>
-/* .like-btn {
-    right: 30px;
-} */
-/* .favorited {
-    background-color: black;
-    color: black;
-} */
+.comment-title:hover{
+    cursor: pointer;
+    background-color: silver;
+}
 </style>
