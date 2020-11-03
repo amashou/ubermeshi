@@ -5,7 +5,7 @@
             <v-card-text>ログイン</v-card-text>
             <v-form @submit.prevent="login">
                 <v-text-field v-model="userInfo.email" label="Email" :rules="emailRules" color="secondary"></v-text-field>
-                <v-text-field v-model="userInfo.password" label="Password" :rules="passwordRules" :type="show ? 'text' : 'password'" 
+                <v-text-field v-model="userInfo.password" label="パスワード" :rules="passwordRules" :type="show ? 'text' : 'password'" 
                     @click:append="show = !show" :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'" color="accent">
                 </v-text-field>
                 <v-col class="d-flex flex-row-reverse">

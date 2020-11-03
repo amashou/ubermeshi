@@ -4,11 +4,12 @@
             <v-card-title>ubermeshiへようこそ</v-card-title>
             <v-card-text>新規登録</v-card-text>
             <v-form @submit.prevent="signUp">
+                <v-text-field v-model="userInfo.name" label="ユーザーネーム" :rules="nameRules" color="secondary"></v-text-field>
                 <v-text-field v-model="userInfo.email" label="Email" :rules="emailRules" color="secondary"></v-text-field>
-                <v-text-field v-model="userInfo.password" label="Password" :rules="passwordRules" :type="show ? 'text' : 'password'" 
+                <v-text-field v-model="userInfo.password" label="パスワード" :rules="passwordRules" :type="show ? 'text' : 'password'" 
                     @click:append="show = !show" :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'" color="secondary">
                 </v-text-field>
-                <v-text-field v-model="userInfo.password_confirmation" label="Password_confirmation" :rules="passwordConfirmationRules" :type="show ? 'text' : 'password'" 
+                <v-text-field v-model="userInfo.password_confirmation" label="確認用パスワード" :rules="passwordConfirmationRules" :type="show ? 'text' : 'password'" 
                     @click:append="show = !show" :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'" color="secondary">
                 </v-text-field>
                 <v-col class="d-flex flex-row-reverse">
@@ -33,6 +34,9 @@ export default {
                password: "",
                password_confirmation: "",
            },
+           nameRules: [
+               v => v.length <=  15 || "15文字以内で入力してください"
+           ],
            emailRules: [
                    v => !!v || 'Emailは必ず入力してください',
                    v => {
