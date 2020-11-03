@@ -36,7 +36,7 @@
                 <v-text-field v-model="postInfo.title" label="タイトル" required></v-text-field>
               </v-col>
               <v-col cols="12" pb0>
-                <v-textarea label="おすすめポイント" auto-grow rows="1"></v-textarea>
+                <v-textarea label="おすすめポイント" auto-grow rows="1" v-model="postInfo.description"></v-textarea>
               </v-col>
               <v-col cols="5" class="uploader">
                 <v-sheet class="preview">

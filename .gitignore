@@ -19,6 +19,7 @@
 !/tmp/.keep
 .env
 /mysql
+/public/uploads
 # Ignore uploaded files in development
 /storage/*
 !/storage/.keep

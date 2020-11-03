@@ -12,11 +12,11 @@
                 <v-card class="mx-4 mb-4" color="#EEE" raised>
                     <v-img :src="post.food_picture.url" height="200px" cover></v-img>
                     <v-divider></v-divider>
-                    <v-card-title>タイトル:{{post.title}}</v-card-title>
-                    <v-card-subtitle class="py-3">店名ー{{post.restaurant_name}}</v-card-subtitle>
+                    <v-card-title>{{post.title}}</v-card-title>
+                    <v-card-subtitle class="py-3">店名-{{post.restaurant_name}}</v-card-subtitle>
                     <v-card-subtitle class="pt-0">住所-{{post.restaurant_address}}</v-card-subtitle>
                     <v-divider></v-divider>
-                    <v-card-text>おすすめポイントおすすめポイントおすすめポイントおすすめポイントおすすめポイントおすすめポイント</v-card-text>
+                    <v-card-text>{{post.description}}</v-card-text>
                     <v-chip color="accent" right class="ma-3" outlined route :to="{ name: 'PostDetail', params: {id: post.id} }">more info</v-chip>
                 </v-card>
             </v-flex>
