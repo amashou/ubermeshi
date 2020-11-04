@@ -37,6 +37,7 @@ export default {
            show: false,
            errors: {},
            userInfo: {
+               name: '',
                email: "",
                password: "",
                password_confirmation: "",

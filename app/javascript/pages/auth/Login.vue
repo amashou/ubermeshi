@@ -15,6 +15,7 @@
                     <v-btn type="submit" color="secondary" class="ml-2">ログイン</v-btn>
                     <v-btn type="submit" color="secondary" class="ml-2" route :to="{ name: 'Signup' }">新規登録へ</v-btn>
                     <v-btn type="submit" color="secondary" class="ml-2" route :to="{ name: 'Top' }">Topへ</v-btn>
+                    <v-btn type="submit" color="secondary" class="ml-2" @click="testLogin">テストログイン</v-btn>
                 </v-col>
             </v-form>
         </v-card>
@@ -45,6 +46,11 @@ export default {
         }
     },
     methods: {
+        testLogin(){
+            this.userInfo.email = "test@example.com"
+            this.userInfo.password = "password"
+            login();
+        },
         login(){
             axios.post('/api/v1/auth/sign_in', this.userInfo)
                 .then(res => {
