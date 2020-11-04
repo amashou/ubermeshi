@@ -136,7 +136,7 @@ export default {
         },
         sendReply(comment_id, comments_index){
             let formData = new FormData();
-            formData.append('replyMessage[content]', this.replyMessage);
+            formData.append('reply[content]', this.replyMessage);
             axios.post('/api/v1/posts/' + this.post.id + "/comments/" + comment_id + "/replys", formData)
                 .then(res => {
                     if (res.data.error) {

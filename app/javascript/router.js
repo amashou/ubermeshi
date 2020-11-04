@@ -70,7 +70,7 @@ export default new Router({
             name: 'Profile',
             component: Profile,
             children: [
-                { path: '', component: ProfileRoot },
+                { path: 'root', component: ProfileRoot, name: 'ProfileRoot'},
                 { path: 'posts', component: ProfilePosts },
                 { path: 'comments', component: ProfileComments },
                 { path: 'follows', component: ProfileFollows }

@@ -23,20 +23,20 @@ RSpec.describe Reply, type: :model do
                   expect(reply.errors[:content]).to include('を入力してください')
               end
   
-              it "30文字を超えたら無効であること" do
-                  reply.content = 'a' * 31
+              it "140文字を超えたら無効であること" do
+                  reply.content = 'a' * 141
                   reply.valid?
                   expect(reply).to_not be_valid
               end
   
-              it "30文字を超えたらエラーを返すこと" do
-                  reply.content = 'a' * 31
+              it "140文字を超えたらエラーを返すこと" do
+                  reply.content = 'a' * 141
                   reply.valid?
-                  expect(reply.errors[:content]).to include('は30文字以内で入力してください')
+                  expect(reply.errors[:content]).to include('は140文字以内で入力してください')
               end
   
-              it "30文字は有効であること" do
-                  reply.content = 'a' * 30
+              it "140文字は有効であること" do
+                  reply.content = 'a' * 140
                   reply.valid?
                   expect(reply).to be_valid
               end
