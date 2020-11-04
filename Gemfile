@@ -23,6 +23,7 @@ gem 'carrierwave'
 gem 'mini_magick', '~> 4.8'
 gem 'active_model_serializers'
 gem 'rails-i18n'
+gem 'rack-cors'
 
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'mini_racer', platforms: :ruby

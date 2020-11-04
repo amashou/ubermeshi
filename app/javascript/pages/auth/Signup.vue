@@ -1,6 +1,12 @@
 <template>
     <v-container>
         <v-card max-width="400px" class="mx-auto my-16" flat color="primary">
+            <!-- <template v-if="errors">
+                <v-alert v-for="error in errors" :key="error" outlined type="error">{{error}}</v-alert>
+            </template> -->
+            <template v-if="errors">
+                    <v-alert outlined dense type="error" v-for="error in errors" :key="error">{{error}}</v-alert>
+            </template>
             <v-card-title>ubermeshiへようこそ</v-card-title>
             <v-card-text>新規登録</v-card-text>
             <v-form @submit.prevent="signUp">
@@ -29,6 +35,7 @@ export default {
     data(){
         return{
            show: false,
+           errors: {},
            userInfo: {
                email: "",
                password: "",
@@ -56,7 +63,6 @@ export default {
         signUp(){
             axios.post('/api/v1/auth/', this.userInfo)
                 .then(res => {
-                    console.log(res);
                     localStorage.setItem("access-token", res.headers["access-token"]);
                     localStorage.setItem("uid", res.headers.uid);
                     localStorage.setItem("client", res.headers.client);
@@ -67,8 +73,8 @@ export default {
                     this.$store.dispatch("current_user", res.data.data);
                     this.$router.push({ path: "/" });
                 })
-                .catch((error) => {
-                    console.log(error);
+                .catch( error => {
+                    this.errors = error.response.data.errors.full_messages;
                 })
         }
     }
