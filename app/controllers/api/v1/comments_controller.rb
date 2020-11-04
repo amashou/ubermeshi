@@ -9,11 +9,10 @@ class Api::V1::CommentsController < ApiController
     comment = Comment.new(comment_params)
     comment.user_id = current_api_user.id
     comment.post_id = params[:post_id]
-    # post = Post.find(params[:post_id])
     if comment.save
-      render json: { status: "SUCCESS", message: "Comment created" }
+      render json: { status: "SUCCESS", message: "Comment created", comment: comment }
     else
-      render json: { status: "Failed", message: "Not comment created" }
+      render json: { status: "FAILED", message: "Not comment created" , error: comment.errors.full_messages }
     end
   end
 

@@ -7,9 +7,9 @@ class Api::V1::ReplysController < ApplicationController
     reply.user_id = current_api_user.id
     reply.comment_id = params[:comment_id]
     if reply.save
-      render json: { status: "SUCCES", message: "Send a reply!"}
+      render json: { status: "SUCCES", message: "Send a reply!", reply: reply}
     else
-      render json: { status: "Faild", message: "Failed replying"}
+      render json: { status: "Faild", message: "Failed replying", error: reply.errors.full_messages}
     end
   end
 

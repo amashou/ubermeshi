@@ -8,6 +8,9 @@
                 </v-btn>
             </template>
             <v-card class="pa-5">
+                <template v-if="errors">
+                    <v-alert v-for="error in errors" :key="error" type="error" outlined>{{error}}</v-alert>
+                </template>
                 <v-textarea label="コメント" auto-grow outlined rows="1" row-height="15" id="comment-area" v-model="content"></v-textarea>
                 <v-card-actions>
                     <v-btn color="blue darken-1" text @click="closeDialog">閉じる</v-btn>
@@ -25,7 +28,8 @@ export default {
     data() {
         return {
             commentDialog: false,
-            content: ''
+            content: '',
+            errors: {}
         }
     },
     methods: {
@@ -35,13 +39,17 @@ export default {
             console.log(formData);
             axios.post('/api/v1/posts/' + this.$route.params.id + '/comments', formData)
                 .then(res => {
-                    console.log(res);
-                    let content = document.querySelector('#comment-area');
-                    content.value = '';
-                    this.$emit('reflectComment', {content: this.content});
-                    this.commentDialog = false;
+                    if (res.data.error){
+                        console.log(res.data.error);
+                        this.errors = res.data.error;
+                    } else {
+                        let content = document.querySelector('#comment-area');
+                        content.value = '';
+                        this.$emit('reflectComment', {content: this.content});
+                        this.commentDialog = false;
+                    }
                 })
-                .catch((error) => {
+                .catch( error => {
                     console.log(error);
                 })
         },

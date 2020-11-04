@@ -90,8 +90,7 @@ export default {
       localStorage.setItem("id", '');
       this.$store.dispatch("current_user", {});
       this.$store.dispatch("isLoggedIn", false);
-      this.$router.push({ path: "/" });
-      window.location.reload();
+      // window.location.reload();
     }
   }
 }

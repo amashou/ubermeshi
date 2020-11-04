@@ -1,6 +1,9 @@
 <template>
     <v-container>
         <v-card max-width="500px" class="mx-auto my-16" flat color="primary">
+            <template v-if="errors">
+                <v-alert outlined dense type="error" v-for="error in errors" :key="error">{{error}}</v-alert>
+            </template>
             <v-card-title>ubermeshiへようこそ</v-card-title>
             <v-card-text>ログイン</v-card-text>
             <v-form @submit.prevent="login">
@@ -12,6 +15,7 @@
                     <v-btn type="submit" color="secondary" class="ml-2">ログイン</v-btn>
                     <v-btn type="submit" color="secondary" class="ml-2" route :to="{ name: 'Signup' }">新規登録へ</v-btn>
                     <v-btn type="submit" color="secondary" class="ml-2" route :to="{ name: 'Top' }">Topへ</v-btn>
+                    <v-btn type="submit" color="secondary" class="ml-2" @click="testLogin">テストログイン</v-btn>
                 </v-col>
             </v-form>
         </v-card>
@@ -19,7 +23,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from '../../axios-auth';
 
 export default {
     data(){
@@ -42,11 +46,14 @@ export default {
         }
     },
     methods: {
+        testLogin(){
+            this.userInfo.email = "test@example.com"
+            this.userInfo.password = "password"
+            login();
+        },
         login(){
             axios.post('/api/v1/auth/sign_in', this.userInfo)
                 .then(res => {
-                    console.log('login response is back!');
-                    console.log(res);
                     localStorage.setItem("access-token", res.headers["access-token"]);
                     localStorage.setItem("uid", res.headers.uid);
                     localStorage.setItem("client", res.headers.client);
@@ -57,10 +64,9 @@ export default {
                     this.$store.dispatch("current_user", res.data.data);
                     this.$router.push({ path: "/" });
                 })
-                .catch((error) => {
-                    console.log(error);
-                    this.errors = error;
-                })
+                .catch( error => {
+                    this.errors = error.response.data.errors;
+                });
         }
     }
 }
