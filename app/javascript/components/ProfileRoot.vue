@@ -1,10 +1,6 @@
 <template>
     <v-container>
-        <v-chip color="pink" outlined route :to="{ path: '/profile/posts'}">投稿一覧</v-chip>
-        <v-chip color="pink" outlined route :to="{ path: '/profile/comments'}">コメント・返信一覧</v-chip>
-        <v-chip color="pink" outlined route :to="{ path: '/profile/follows'}">フォロー一覧</v-chip>
-        <v-chip color="pink" outlined route :to="{ path: '/profile'}">プロフィール</v-chip>
-        <!-- <v-sheet max-width="600px" class="mx-auto my-12" color="secondary">
+            <v-sheet max-width="600px" class="mx-auto my-12" color="secondary">
             <v-list color="pink" class="white-text">
                 <v-list-item>
                     <v-list-item-avatar color="grey" size="62"><v-img v-if="userInfo.thumbnail" :src="userInfo.thumbnail.url"></v-img></v-list-item-avatar>
@@ -33,21 +29,26 @@
             <v-col class="d-flex flex-row-reverse">
                 <v-btn route :to="{ path: '/' }" color="pink" dark rounded class="btn">Topへ</v-btn>
             </v-col>
-        </v-sheet> -->
-        <router-view></router-view>
+        </v-sheet>
     </v-container>
 </template>
 
 <script>
-import axios from '../../axios-auth';
+import axios from '../axios-auth';
 import { mapGetters } from 'vuex';
 
 export default {
     data(){
-        return{
-            userInfo: {},   
-            followers_count: '',
-            followings_count: '',
+        return {
+            userInfo: {},
+            uploadedThumbnail: '',
+            items: ['イーター', '配達員'],
+            numberRules:[
+                v => {
+                    const num = /^[0-9]+$/;
+                    return num.test(v) || "半角数字で入力してください";
+                }
+            ]
         }
     },
     computed: {
@@ -55,20 +56,42 @@ export default {
     },
     created(){
         axios.get('/api/v1/users/' + this.current_user.id)
-        .then(res => {
-            console.log(res);
+        .then( res => {
+            console.log(res.data.user);
             this.userInfo = res.data.user;
-            this.followings_count = res.data.followings_count;
-            this.followers_count = res.data.followers_count;
         })
-        .catch((errors) => {
-            console.log(errors);
+        .catch( error => {
+            console.log(error);
         });
+    },
+    methods: {
+        onFileChange(e){
+            let selectFile = e;
+            let reader = new FileReader();
+            reader.onload = e => {
+                this.uploadedThumbnail = e.target.result;
+            }
+            reader.readAsDataURL(selectFile);
+            this.userInfo.thumbnail = selectFile;
+        },
+        update(){
+            let formData = new FormData();
+            formData.append("user[name]", this.userInfo.name);
+            // formData.append("user[thumbnail]", this.userInfo.thumbnail)
+            formData.append("user[ubered_count]", this.userInfo.ubered_count);
+            formData.append("user[profile_comment]", this.userInfo.profile_comment);
+            formData.append("user[status]", this.userInfo.status);
+            formData.append("user[address]", this.userInfo.address);
+            formData.append("user[thumbnail]", this.userInfo.thumbnail);
+            axios.patch('/api/v1/users/' + this.current_user.id, formData)
+                .then(res => {
+                    console.log(res);
+                    this.$router.push({ path: '/' });
+                })
+                .catch(erro => {
+                    console.log(erro);
+                });
+        },
     }
 }
 </script>
-<style scoped>
-.updateBtn{
-    bottom: 20px;
-}
-</style>
