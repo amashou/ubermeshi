@@ -11,6 +11,10 @@ import UserEdit from './pages/user/UserEdit.vue';
 import Profile from './pages/user/Profile.vue'
 import PostCreate from './pages/post/PostCreate.vue';
 import PostDetail from './pages/post/PostDetail.vue';
+import ProfilePosts from './components/ProfilePosts.vue';
+import ProfileComments from './components/ProfileComments.vue';
+import ProfileFollows from './components/ProfileFollows.vue';
+import ProfileRoot from './components/ProfileRoot.vue';
 
 import store from './store';
 
@@ -64,7 +68,13 @@ export default new Router({
         {
             path: '/profile',
             name: 'Profile',
-            component: Profile
+            component: Profile,
+            children: [
+                { path: '', component: ProfileRoot },
+                { path: 'posts', component: ProfilePosts },
+                { path: 'comments', component: ProfileComments },
+                { path: 'follows', component: ProfileFollows }
+            ]
         }
     ]
 });

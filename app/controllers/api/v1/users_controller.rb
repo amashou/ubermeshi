@@ -1,11 +1,22 @@
 class Api::V1::UsersController < ApiController
   before_action :authenticate_api_user!, only: [:update]
-  before_action :set_user, only: [:show, :update]
+  before_action :set_user, only: [:show, :update, :posts, :follows, :comments]
 
   def index
     @users = User.all
-    #=> User.select(:id, :name, :comment, :ubered_countm :status)???
-    render json: @users.to_json
+    render json: @users
+  end
+
+  def posts
+    render json: { posts: @user.posts }
+  end
+  
+  def follows
+    render json: { followers: @user.followers, followings: @user.followings } 
+  end
+
+  def comments
+    render json: { comments: @user.comments, replys: @user.replys } 
   end
 
   def show
@@ -18,7 +29,7 @@ class Api::V1::UsersController < ApiController
     if @user.update_attributes(user_params)
       render json: { status: 'SUCCESS', message: 'updated', data: @user }
     else
-      render json: { status: 'SUCCESS', message: 'Not updated', data: @user.errors }
+      render json: { status: 'SUCCESS', message: 'Not updated', data: @user.errors.full_messages }
     end
   end
 

@@ -9,6 +9,11 @@ Rails.application.routes.draw do
     
     namespace :v1 do
       resources :users do
+        member  do
+          get 'posts'
+          get 'follows'
+          get 'comments'
+        end
         resource :relationships, only: [:create, :destroy]
       end
       resources :posts do
