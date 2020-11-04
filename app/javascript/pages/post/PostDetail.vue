@@ -47,6 +47,9 @@
                                 <v-list-item class="pb-0">
                                     <v-list-item-content>
                                         <v-list-item-title v-for="(reply, index) in comment.replys" :key="index" class="mb-2 pl-3">{{reply.content}}</v-list-item-title>
+                                        <template v-if="replyErrors">
+                                            <v-alert v-for="error in replyErrors" :key="error" type="error" outlined>{{error}}</v-alert>
+                                        </template>
                                         <v-textarea v-model="replyMessage" label="返信メッセージ" outlined clearable auto-grow rows="1" class="mt-3"></v-textarea>
                                         <v-btn @click="sendReply(comment.id, index)" color="secondary" rounded max-width="80px" bottom right>送信</v-btn>
                                     </v-list-item-content>
@@ -78,6 +81,7 @@ export default {
             comments: [],
             formComment: "",
             errors: "",
+            replyErrors: ""
         }
     },
     computed:{
@@ -109,13 +113,8 @@ export default {
     methods: {
         favorite(){
             axios.post('/api/v1/posts/' + this.post.id + '/favorites',)
-                .then((response) => {
-                    console.log(response);
-                    if(response.data.favorites_count){
-                        this.favorites_count = response.data.favorites_count;
-                    } else {
-                        this.errors = response.data.message;
-                    }
+                .then( res => {
+                    this.favorites_count = res.data.favorites_count
                 })
                 .catch((errors) => {
                     console.log(errors);
@@ -140,7 +139,12 @@ export default {
             formData.append('replyMessage[content]', this.replyMessage);
             axios.post('/api/v1/posts/' + this.post.id + "/comments/" + comment_id + "/replys", formData)
                 .then(res => {
-                    window.location.reload();
+                    if (res.data.error) {
+                        console.log(res.data.error);
+                        this.replyErrors = res.data.error;
+                    } else {
+                        window.location.reload();
+                    }
                     // リダイレクトしなくても返信が反映するようにする
                     // this.comments[comments_index].replys.unshift({contnet: this.replyMessage});
                 })

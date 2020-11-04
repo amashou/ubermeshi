@@ -2,17 +2,15 @@ class Api::V1::FavoritesController < ApiController
   before_action :authenticate_api_user!
 
   def create
-    favorite = Favorite.new(post_id: params[:post_id], user_id: current_api_user.id)
+    # favorite = Favorite.new(post_id: params[:post_id], user_id: current_api_user.id)
     post = Post.find(params[:post_id])
-    if current_api_user.id == post.user_id
-      render json: { message: "cannot favorites your post"}
-    elsif post.favorites.where(user_id: current_api_user).exists?
-      render json: {message: "already favorited"}
-    elsif favorite.save
-      favorites_count = post.favorites.count
-      render json: { status: "SUCCESS", message: 'favorited', favorites_count: favorites_count}
-    else
-      render json: { status: "FAILURE", message: 'Not favorited', data: params[:post_id]}
+    favorite = post.favorites.new(user_id: current_api_user.id)
+
+    if favorite.save
+      render json: { status: "Created", favorites_count: post.favorites.count}
+    else 
+      post.favorites.find_by(user_id: current_api_user.id).destroy
+      render json: { status: "Destroyed", favorites_count: post.favorites.count}
     end
   end
 
