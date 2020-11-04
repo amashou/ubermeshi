@@ -3,7 +3,8 @@
         <v-chip color="pink" outlined route :to="{ path: '/profile/posts'}">投稿一覧</v-chip>
         <v-chip color="pink" outlined route :to="{ path: '/profile/comments'}">コメント・返信一覧</v-chip>
         <v-chip color="pink" outlined route :to="{ path: '/profile/follows'}">フォロー一覧</v-chip>
-        <v-chip color="pink" outlined route :to="{ path: '/profile'}">プロフィール</v-chip>
+        <v-chip color="pink" outlined route :to="{ name: 'ProfileRoot'}">プロフィール</v-chip>
+        <v-btn color="secondary" route :to="{ path: '/'}" absolute right>TOPへ戻る</v-btn>
         <!-- <v-sheet max-width="600px" class="mx-auto my-12" color="secondary">
             <v-list color="pink" class="white-text">
                 <v-list-item>

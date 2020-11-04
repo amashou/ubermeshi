@@ -17,6 +17,12 @@ class Api::V1::CommentsController < ApiController
   end
 
   def update
+    comment = Comment.find(params[:id])
+    if comment.update_attributes!(comment_params)
+      render json: { status: "SUCCESS", comment: comment}
+    else
+      render json: { status: "FAILD", errors: comment.errors.full_messages }
+    end
   end
 
   def destroy

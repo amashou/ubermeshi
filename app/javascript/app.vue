@@ -15,7 +15,7 @@
       </v-layout>
       <v-divider></v-divider>
         <v-list v-if="isLoggedIn">
-          <v-list-item v-for="link in links" :key="link.text" route :to="{ name: 'Profile'}">
+          <v-list-item v-for="link in links" :key="link.text" route :to="{ name: 'ProfileRoot'}">
             <v-list-item-icon>
               <v-icon>{{ link.icon }}</v-icon>
             </v-list-item-icon>
@@ -60,7 +60,7 @@ export default {
       drawer: null,
       links: [
         { icon: 'mdi-account-circle', text: "プロフィール", route: '/profile'},
-        { icon: 'mdi-heart', text: "通知", route: '/'},
+        // { icon: 'mdi-heart', text: "通知", route: '/'},
       ]
     }
   },
