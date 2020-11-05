@@ -20,19 +20,11 @@ class Api::V1::PostsController < ApiController
     restaurant = Restaurant.new(restaurant_params)
     post = restaurant.posts.build(post_params)
     post.user_id = current_api_user.id
-
-    if restaurant.save
-      if post.save
-        render json: { message: "Restaurant and Post are created" }
-      else
-        render json: { message: "Restaurant created, but Post isn't created"}
-      end
+    restaurant.save
+    if post.save
+      render json: { status: "SUCCESS", message: "post created" }
     else
-      if post.save
-        render json: { message: "Just post created"}
-      else
-        render json: { message: "Restaurant and Post aren't created" }
-      end
+      render json: { status: "FAILED", errors: post.errors.full_messages }
     end
   end
 

@@ -10,11 +10,15 @@ ja:
     models:
       comment: コメント
       reply: 返信
+      post: 投稿
     attributes:
       comment:
         content: コメント
       reply:
         content: 返信
+      post:
+        title: タイトル
+        description: オススメポイント
   date:
     abbr_day_names:
     - 日
