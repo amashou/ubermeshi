@@ -15,6 +15,7 @@ import ProfilePosts from './components/ProfilePosts.vue';
 import ProfileComments from './components/ProfileComments.vue';
 import ProfileFollows from './components/ProfileFollows.vue';
 import ProfileRoot from './components/ProfileRoot.vue';
+import ProfileFavorites from './components/ProfileFavorites.vue';
 
 import store from './store';
 
@@ -73,6 +74,7 @@ export default new Router({
                 { path: 'root', component: ProfileRoot, name: 'ProfileRoot'},
                 { path: 'posts', component: ProfilePosts },
                 { path: 'comments', component: ProfileComments },
+                { path: 'favorites', component: ProfileFavorites },
                 { path: 'follows', component: ProfileFollows }
             ]
         }

@@ -1,6 +1,6 @@
 class Api::V1::UsersController < ApiController
   before_action :authenticate_api_user!, only: [:update]
-  before_action :set_user, only: [:show, :update, :posts, :follows, :comments]
+  before_action :set_user, only: [:show, :update, :posts, :follows, :comments, :favorite_posts]
 
   def index
     @users = User.all
@@ -17,6 +17,10 @@ class Api::V1::UsersController < ApiController
 
   def comments
     render json: { comments: @user.comments, replys: @user.replys } 
+  end
+
+  def favorite_posts
+    render json: { favorite_posts: @user.favorite_posts}
   end
 
   def show

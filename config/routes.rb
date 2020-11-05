@@ -14,13 +14,13 @@ Rails.application.routes.draw do
           get 'posts'
           get 'follows'
           get 'comments'
+          get 'favorite_posts'
         end
         resource :relationships, only: [:create, :destroy]
       end
       resources :replys, only: [:update, :destroy]
       resources :comments, only: [:update, :destroy]
-      # patch '/replys/:reply_id', to: 'replys#update'
-      # patch '/comments/:comment_id', to: 'comments#update'
+      resources :favorites, only: [:show, :destroy]
 
       resources :posts do
         resource :favorites, only: [:create, :destroy]

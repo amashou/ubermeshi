@@ -42,7 +42,7 @@ export default {
         return {
             userInfo: {},
             uploadedThumbnail: '',
-            items: ['イーター', '配達員'],
+            items: ['ヘビーユーザー', 'ヘビードライバー', 'プライマリー（100回未満程度）'],
             numberRules:[
                 v => {
                     const num = /^[0-9]+$/;
