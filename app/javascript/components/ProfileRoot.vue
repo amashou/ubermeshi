@@ -10,6 +10,9 @@
                 </v-list-item>
             </v-list>
             <v-card tile class="pa-3">
+                <template v-if="erros">
+                    <v-alert v-for="error in errors" :key="error" type="error" outlined>{{error}}</v-alert>
+                </template>
                 <v-sheet>
                     <v-avatar v-if="uploadedThumbnail" size="62">
                         <v-img :src="uploadedThumbnail"></v-img>
@@ -40,9 +43,10 @@ import { mapGetters } from 'vuex';
 export default {
     data(){
         return {
+            errors: {},
             userInfo: {},
             uploadedThumbnail: '',
-            items: ['イーター', '配達員'],
+            items: ['ヘビーユーザー', 'ヘビードライバー', 'プライマリー（100回未満程度）'],
             numberRules:[
                 v => {
                     const num = /^[0-9]+$/;
@@ -77,7 +81,6 @@ export default {
         update(){
             let formData = new FormData();
             formData.append("user[name]", this.userInfo.name);
-            // formData.append("user[thumbnail]", this.userInfo.thumbnail)
             formData.append("user[ubered_count]", this.userInfo.ubered_count);
             formData.append("user[profile_comment]", this.userInfo.profile_comment);
             formData.append("user[status]", this.userInfo.status);
@@ -85,8 +88,12 @@ export default {
             formData.append("user[thumbnail]", this.userInfo.thumbnail);
             axios.patch('/api/v1/users/' + this.current_user.id, formData)
                 .then(res => {
-                    console.log(res);
-                    this.$router.push({ path: '/' });
+                    if (res.data.errors){
+                        this.errors = res.data.errors
+                    } else {
+                        console.log(res);
+                        this.$router.push({ path: '/' });
+                    }
                 })
                 .catch(erro => {
                     console.log(erro);

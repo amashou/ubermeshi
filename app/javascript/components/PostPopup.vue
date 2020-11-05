@@ -12,31 +12,40 @@
             </v-btn>
       </template>
       <v-card>
-        <v-card-title>
-          <span class="headline"></span>
-        </v-card-title>
         <v-card-text>
           <v-container>
+            <v-row v-if="errors">
+              <v-col cols="12" class="pb-0">
+                <v-alert v-for="error in errors" :key="error" type="error" outlined class="pa-2">{{error}}</v-alert>
+              </v-col>
+            </v-row>
             <v-row>
               <v-col cols="12">
-                <!-- <v-text-field v-model="saerch_name" @change="searchReastaurant" label="店舗名" clearable> -->
-                <v-text-field v-model="saerch_name" label="店舗名" clear-icon="mdi-close-circle"
-                clearable　append-outer-icon="mdi-magnify" @click:append-outer="searchReastaurant" required>
+                <v-text-field v-model="saerch_name" label="店舗名" clear-icon="mdi-close-circle" clearable required>
                 </v-text-field>
+                <v-btn @click="searchReastaurant" color="pink" dark width="300px" class="mx-auto my-2" block><v-icon left>mdi-magnify</v-icon>お店を検索</v-btn>
               </v-col>
               <template v-if="searching">
-              <v-col md="6" sm="12" v-for="(restaurant, index) in restaurants" :key="restaurant.index">
-                <v-card @click="selectRestaurant(index)">
-                  <v-card-title>{{restaurant.name}}</v-card-title>
-                  <v-card-text>{{restaurant.address}}</v-card-text>
-                </v-card>
-              </v-col>
+                <v-col>
+                  <v-list v-for="(restaurant, index) in restaurants" :key="index">
+                    <v-list-item @click="selectRestaurant(index)">
+                      <v-list-item-content>
+                         <v-list-item-title>{{restaurant.name}}</v-list-item-title>
+                        <v-list-item-subtitle>{{restaurant.address}}</v-list-item-subtitle>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </v-list>
+                  <!-- <v-card @click="selectRestaurant(index)">
+                    <v-card-title>{{restaurant.name}}</v-card-title>
+                    <v-card-text>{{restaurant.address}}</v-card-text>
+                  </v-card> -->
+                </v-col>
               </template>
               <v-col cols="12">
-                <v-text-field v-model="postInfo.title" label="タイトル" required></v-text-field>
+                <v-textarea v-model="postInfo.title" label="タイトル" auto-grow rows="1" row-height="20" required counter="30" outlined></v-textarea>
               </v-col>
               <v-col cols="12" pb0>
-                <v-textarea label="おすすめポイント" auto-grow rows="1" v-model="postInfo.description"></v-textarea>
+                <v-textarea label="オススメポイント" v-model="postInfo.description" auto-grow outlined rows="1" row-height="20" counter="140"></v-textarea>
               </v-col>
               <v-col cols="5" class="uploader">
                 <v-sheet class="preview">
@@ -52,20 +61,8 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn
-            color="blue darken-1"
-            text
-            @click="dialog = false"
-          >
-            閉じる
-          </v-btn>
-          <v-btn
-            color="blue darken-1"
-            text
-            @click="createPost"
-          >
-            投稿
-          </v-btn>
+          <v-btn color="blue darken-1" outlined text @click="dialog = false" >閉じる</v-btn>
+          <v-btn color="blue darken-1" outlined text @click="createPost" class="ml-3">投稿</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -79,6 +76,7 @@ import axiosAuth from '../axios-auth';
 export default {
     data() {
         return {
+            errors: {},
             searching: true,
             dialog: false,
             saerch_name: '',
@@ -112,8 +110,9 @@ export default {
                     this.restaurants = res.data.rest;
                     this.searching = true;
                 })
-                .catch(erro => {
-                    console.log(erro);
+                .catch( error => {
+                    console.log(error)
+                    this.errors = error.response
                 })
         },
         onFileChange(e){
@@ -154,10 +153,12 @@ export default {
                 .then(res => {
                     console.log('this is response');
                     console.log(res);
-                    this.restaurantInfo = {};
-                    this.postInfo = {};
-                    this.saerch_name = '';
-                    this.dialog =　false;
+                    if (res.data.errors) {
+                      this.errors = res.data.errors
+                    } else {
+                      this.restaurantInfo = this.postInfo = this.saerch_name = '';
+                      this.dialog =　false;
+                    }
                 })
                 .catch(erro => {
                     console.log(erro);

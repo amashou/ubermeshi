@@ -1,12 +1,5 @@
 <template>
     <v-container>
-        <!-- <v-layout row class="mb-3 px-4">
-            <v-chip color="pink" link outlined　class="mr-2">新着順</v-chip>
-            <v-chip color="pink" link outlined　class="mr-2">人気順</v-chip>
-            <v-chip color="pink" link outlined　class="mr-2">ドライバー</v-chip>
-            <v-chip color="pink" link outlined　class="mr-2">イーター</v-chip>
-            <v-chip color="pink" link outlined　class="mr-2">新メニュー</v-chip>
-        </v-layout> -->
         <v-layout row wrap class="px-2 grey--text">
             <v-flex v-for="(post,index) in posts" :key="index" md4 sm6 xs11 mx-auto>
                 <v-card class="mx-4 mb-4" color="#EEE" raised>
