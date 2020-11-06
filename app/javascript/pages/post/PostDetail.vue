@@ -92,7 +92,6 @@ export default {
     created(){
         axios.get('/api/v1/posts/'+ this.$route.params.id)
             .then(res => {
-                console.log('res data is ...',res);
                 this.post.id = res.data.id;
                 this.post.title = res.data.title;
                 this.post.description = res.data.description;
@@ -101,10 +100,6 @@ export default {
                 this.user = res.data.userInfo;
                 this.favorites_count = res.data.favorites_count;
                 this.comments = res.data.comments;
-                console.log(this.restaurant);
-                console.log(this.user);
-                console.log(this.favorites_count);
-                console.log(this.comments);
             })
             .catch(erro => {
                 console.log(erro);
@@ -123,7 +118,6 @@ export default {
         unfavorite(){
             axios.delete('/api/v1/posts/' + this.post.id + '/favorites')
                 .then((response) => {
-                    console.log(response.data.favorites_count);
                     if(response.data.favorites_count){
                         this.favorites_count = response.data.favorites_count;
                     } else {
@@ -140,7 +134,6 @@ export default {
             axios.post('/api/v1/posts/' + this.post.id + "/comments/" + comment_id + "/replys", formData)
                 .then(res => {
                     if (res.data.error) {
-                        console.log(res.data.error);
                         this.replyErrors = res.data.error;
                     } else {
                         window.location.reload();
