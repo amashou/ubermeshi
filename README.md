@@ -31,7 +31,7 @@ URL
 * Rails 5.2.4
 
 フロントエンド
-* Vue.js
+* Vue.js 4.1.2
 * vuetify
 * vuex
 
