@@ -25,13 +25,13 @@
                     <v-select :items="items" label="ステータス" v-model="userInfo.status" outlined></v-select>
                     <v-text-field v-model="userInfo.ubered_count" label="利用回数" :rules="numberRules" outlined></v-text-field>
                     <v-card-text>最終更新：{{userInfo.updated_at}}</v-card-text>
-                    <v-card-actions>
+                    <v-card-actions class="mb-5">
                         <v-btn absolute right color="secondary" rounded class="updateBtn" @click="update"><v-icon left>mdi-lead-pencil</v-icon>更新</v-btn>
                     </v-card-actions>
             </v-card>
-            <v-col class="d-flex flex-row-reverse">
+            <!-- <v-col class="d-flex flex-row-reverse">
                 <v-btn route :to="{ path: '/' }" color="pink" dark rounded class="btn">Topへ</v-btn>
-            </v-col>
+            </v-col> -->
         </v-sheet>
     </v-container>
 </template>
