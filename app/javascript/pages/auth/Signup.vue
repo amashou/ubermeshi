@@ -20,10 +20,9 @@
                     @click:append="show = !show" :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'" color="secondary">
                 </v-text-field>
                 <v-col class="d-flex flex-row-reverse">
-                    <v-btn type="submit" color="secondary" class="ml-2">登録</v-btn>
-                    <v-btn type="submit" color="secondary" class="ml-2" route :to="{ name: 'Login' }">ログインへ</v-btn>
-                    <v-btn type="submit" color="secondary" class="ml-2" @click="testLogin">テストログイン</v-btn>
-                    <v-btn type="submit" color="secondary" class="ml-2" route :to="{ name: 'Top' }">Topへ</v-btn>
+                    <v-btn type="submit" color="secondary" class="ml-2">新規登録</v-btn>
+                    <v-btn type="submit" color="secondary" class="ml-2" route :to="{ name: 'Login' }" outlined>ログインへ</v-btn>
+                    <v-btn type="submit" color="secondary" class="ml-2" @click="testLogin" outlined>テストログイン</v-btn>
                 </v-col>
         </v-form>
         </v-card>
