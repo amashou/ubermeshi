@@ -45,7 +45,7 @@
                 </v-col>
               </template>
               <v-col cols="12">
-                <v-textarea v-model="postInfo.title" label="タイトル" rows="1" row-height="20" required counter="30" outlined :disabled="isDisabled"></v-textarea>
+                <v-textarea v-model="postInfo.title" label="タイトル" rows="1" row-height="20" counter="30" outlined :disabled="isDisabled"></v-textarea>
               </v-col>
               <v-col cols="12" pb0>
                 <v-textarea label="オススメポイント" v-model="postInfo.description" auto-grow outlined rows="1" row-height="20" counter="140" :disabled="isDisabled"></v-textarea>
@@ -64,7 +64,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" outlined text @click="dialog = false">閉じる</v-btn>
+          <v-btn color="blue darken-1" outlined text @click="dialogClose">閉じる</v-btn>
           <v-btn color="blue darken-1" outlined text @click="createPost" class="ml-3" v-bind:disabled="isDisabled">投稿</v-btn>
         </v-card-actions>
       </v-card>
@@ -123,9 +123,7 @@ export default {
         },
         fileDown(){
           let img = document.querySelector('upload-file');
-          img.remove();
-          this.postInfo.food_picture = null;
-          this.uploadFile = null;
+          this.postInfo.food_picture =this.uploadFile = '';
           this.imageBtnToggle = !this.imageBtnToggle;
         },
         searchReastaurant(){
@@ -145,15 +143,14 @@ export default {
         },
         onFileChange(e){
           console.log('target is ...', e.target.files);
-          let selectFile = e.target.files;
           let reader = new FileReader();
           reader.onload = (e) => {
             console.log(e);
             this.uploadFile = e.target.result
           }
-          reader.readAsDataURL(selectFile[0]);
+          reader.readAsDataURL(e.target.files[0]);
           this.imageBtnToggle = !this.imageBtnToggle;
-          this.postInfo.food_picture = selectFile[0];
+          this.postInfo.food_picture = e.target.files[0];
         },
         selectRestaurant(obj = '') {
             this.saerch_name = obj.name || this.saerch_name ;
@@ -197,18 +194,23 @@ export default {
             console.log(formData);
             axiosAuth.post('/api/v1/posts', formData)
                 .then(res => {
-                    console.log('this is response');
                     console.log(res);
                     if (res.data.errors) {
                       this.errors = res.data.errors
                     } else {
-                      this.restaurantInfo = this.postInfo = this.saerch_name = '';
-                      this.dialog =　false;
+                      this.restaurantInfo = this.postInfo = this.saerch_name = this.uploadFile =  '';
+                      this.imageBtnToggle = !this.imageBtnToggle;
+                      this.isSelectedFile = this.dialog =　false;
                     }
                 })
                 .catch(erro => {
                     console.log(erro);
                 });
+        },
+        dialogClose(){
+          this.restaurantInfo = this.postInfo = this.saerch_name = this.uploadFile =  '';
+          this.imageBtnToggle = true;
+          this.dialog = this.isSelectedFile = false;
         }
     }
 }
