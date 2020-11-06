@@ -59,8 +59,7 @@ export default {
       isAuthenticated: false,
       drawer: null,
       links: [
-        { icon: 'mdi-account-circle', text: "プロフィール", route: '/profile'},
-        // { icon: 'mdi-heart', text: "通知", route: '/'},
+        { icon: 'mdi-account-circle', text: "プロフィール", route: '/profile'}
       ]
     }
   },
