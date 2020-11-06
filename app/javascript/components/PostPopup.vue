@@ -19,7 +19,7 @@
               <v-col cols="12">
                 <v-text-field v-model="saerch_name" label="店舗名" clear-icon="mdi-close-circle" clearable required>
                 </v-text-field>
-                <v-btn @click="searchReastaurant" color="pink" dark width="300px" class="mx-auto my-2" block><v-icon left>mdi-magnify</v-icon>お店を検索</v-btn>
+                <v-btn @click="searchReastaurant" color="pink" dark class="mx-auto my-2" block><v-icon left>mdi-magnify</v-icon>お店を検索</v-btn>
               </v-col>
               <template v-if="searching">
                 <v-col>

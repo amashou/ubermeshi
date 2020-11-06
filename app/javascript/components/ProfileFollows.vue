@@ -30,9 +30,6 @@
                     </v-list-item>
                 </v-list>
             </v-card>
-            <v-col class="d-flex flex-row-reverse">
-                <v-btn route :to="{ path: '/' }" color="pink" dark rounded class="btn">Topへ</v-btn>
-            </v-col>
         </v-sheet>
 
     </v-container>
