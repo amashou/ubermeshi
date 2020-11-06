@@ -1,17 +1,13 @@
 
 <template>
   <v-layout row justify="center">
-    <v-dialog
-      v-model="dialog"
-      persistent
-      max-width="600px"
-    >
+    <v-dialog v-model="dialog" persistent max-width="600px">
       <template v-slot:activator="{ on, attrs }">
             <v-btn fab x-large color="pink" dark class="mr-3 float-btn" v-bind="attrs" v-on="on">
                 <v-icon>mdi-plus</v-icon>
             </v-btn>
       </template>
-      <v-card>
+      <v-card v-if="isLoggedIn">
         <v-card-text>
           <v-container>
             <v-row v-if="errors">
@@ -27,25 +23,32 @@
               </v-col>
               <template v-if="searching">
                 <v-col>
-                  <v-list v-for="(restaurant, index) in restaurants" :key="index">
-                    <v-list-item @click="selectRestaurant(index)">
-                      <v-list-item-content>
-                         <v-list-item-title>{{restaurant.name}}</v-list-item-title>
-                        <v-list-item-subtitle>{{restaurant.address}}</v-list-item-subtitle>
-                      </v-list-item-content>
-                    </v-list-item>
-                  </v-list>
-                  <!-- <v-card @click="selectRestaurant(index)">
-                    <v-card-title>{{restaurant.name}}</v-card-title>
-                    <v-card-text>{{restaurant.address}}</v-card-text>
-                  </v-card> -->
+                   <v-card class="mb-2">
+                    <v-list class="py-0">
+                      <v-list-item @click="selectRestaurant()">
+                        <v-list-item-content>
+                          <v-list-item-title>候補がありません。このまま選択する</v-list-item-title>
+                        </v-list-item-content>
+                      </v-list-item>
+                    </v-list>
+                  </v-card>
+                  <v-card v-for="(restaurant, index) in restaurants" :key="index" class="mb-2">
+                    <v-list class="py-0">
+                      <v-list-item @click="selectRestaurant(restaurant)">
+                        <v-list-item-content>
+                          <v-list-item-title>{{restaurant.name}}</v-list-item-title>
+                          <v-list-item-subtitle>{{restaurant.address}}</v-list-item-subtitle>
+                        </v-list-item-content>
+                      </v-list-item>
+                    </v-list>
+                  </v-card>
                 </v-col>
               </template>
               <v-col cols="12">
-                <v-textarea v-model="postInfo.title" label="タイトル" auto-grow rows="1" row-height="20" required counter="30" outlined></v-textarea>
+                <v-textarea v-model="postInfo.title" label="タイトル" rows="1" row-height="20" required counter="30" outlined :disabled="isDisabled"></v-textarea>
               </v-col>
               <v-col cols="12" pb0>
-                <v-textarea label="オススメポイント" v-model="postInfo.description" auto-grow outlined rows="1" row-height="20" counter="140"></v-textarea>
+                <v-textarea label="オススメポイント" v-model="postInfo.description" auto-grow outlined rows="1" row-height="20" counter="140" :disabled="isDisabled"></v-textarea>
               </v-col>
               <v-col cols="5" class="uploader">
                 <v-sheet class="preview">
@@ -61,8 +64,17 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" outlined text @click="dialog = false" >閉じる</v-btn>
-          <v-btn color="blue darken-1" outlined text @click="createPost" class="ml-3">投稿</v-btn>
+          <v-btn color="blue darken-1" outlined text @click="dialog = false">閉じる</v-btn>
+          <v-btn color="blue darken-1" outlined text @click="createPost" class="ml-3" v-bind:disabled="isDisabled">投稿</v-btn>
+        </v-card-actions>
+      </v-card>
+      <v-card v-else class="pa-5">
+        <v-card-title class="text-center"><h4 class="mx-auto">投稿するにはアカウントが必要です</h4></v-card-title>
+        <v-card-actions class="d-flex justify-center">
+          <v-btn type="submit" color="secondary" class="mx-1" @click="testLogin()">テストログイン</v-btn>
+          <v-btn type="submit" color="secondary" class="mx-1" route :to="{ name: 'Login' }">ログイン</v-btn>
+          <v-btn type="submit" color="secondary" class="mx-1" route :to="{ name: 'Signup' }">新規登録</v-btn>
+          <v-btn type="submit" color="secondary" class="mx-1" @click="dialog = false">閉じる</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -72,12 +84,18 @@
 <script>
 import axios from 'axios';
 import axiosAuth from '../axios-auth';
+import { mapGetters } from 'vuex';
 
 export default {
     data() {
         return {
+            isDisabled: true,
             errors: {},
-            searching: true,
+            searching: false,
+            testUser: {
+                email: "test@example.com",
+                password: "password"
+            },
             dialog: false,
             saerch_name: '',
             restaurants: [],
@@ -92,7 +110,17 @@ export default {
             imageBtnToggle: true,
         }
     },
+    computed: {
+      // ...mapGetters(['isLoggedIn', 'current_user'])
+      isLoggedIn(){
+        return this.$store.getters.isLoggedIn;
+      }
+    },
     methods: {
+        LoggedinUser(){
+          console.log('check loggedin') ;
+          this.dialog = false;
+        },
         fileDown(){
           let img = document.querySelector('upload-file');
           img.remove();
@@ -127,10 +155,28 @@ export default {
           this.imageBtnToggle = !this.imageBtnToggle;
           this.postInfo.food_picture = selectFile[0];
         },
-        selectRestaurant(index) {
-            this.saerch_name = this.restaurants[index].name;
-            this.restaurantInfo = this.restaurants[index];
+        selectRestaurant(obj = '') {
+            this.saerch_name = obj.name || this.saerch_name ;
+            this.restaurantInfo = obj;
             this.searching = false;
+            this.isDisabled = false;
+        },
+        testLogin(){
+            axios.post('/api/v1/auth/sign_in', this.testUser)
+                .then(res => {
+                    localStorage.setItem("access-token", res.headers["access-token"]);
+                    localStorage.setItem("uid", res.headers.uid);
+                    localStorage.setItem("client", res.headers.client);
+                    localStorage.setItem("expiry", res.headers.expiry);
+                    localStorage.setItem("token-type", res.headers["token-type"]);
+                    localStorage.setItem("id", res.data.data.id);
+                    this.$store.dispatch("isLoggedIn", true);
+                    this.$store.dispatch("current_user", res.data.data);
+                    // window.location.reload();
+                })
+                .catch( error => {
+                    this.errors = error.response.data.errors;
+                });
         },
         createPost(){
             const formData = new FormData();
