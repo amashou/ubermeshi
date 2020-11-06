@@ -1,5 +1,3 @@
-# README
-
 # UberMeshi
 URL
 * https://ubermeshi.work
