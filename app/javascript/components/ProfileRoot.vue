@@ -85,7 +85,9 @@ export default {
             formData.append("user[profile_comment]", this.userInfo.profile_comment);
             formData.append("user[status]", this.userInfo.status);
             formData.append("user[address]", this.userInfo.address);
-            formData.append("user[thumbnail]", this.userInfo.thumbnail);
+            if (this.uploadedThumbnail){
+                formData.append("user[thumbnail]", this.userInfo.thumbnail);
+            }
             axios.patch('/api/v1/users/' + this.current_user.id, formData)
                 .then(res => {
                     if (res.data.errors){
