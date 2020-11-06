@@ -21,6 +21,7 @@
                 <v-col class="d-flex flex-row-reverse">
                     <v-btn type="submit" color="secondary" class="ml-2">登録</v-btn>
                     <v-btn type="submit" color="secondary" class="ml-2" route :to="{ name: 'Login' }">ログインへ</v-btn>
+                    <v-btn type="submit" color="secondary" class="ml-2" @click="testLogin">テストログイン</v-btn>
                     <v-btn type="submit" color="secondary" class="ml-2" route :to="{ name: 'Top' }">Topへ</v-btn>
                 </v-col>
         </v-form>
@@ -61,6 +62,9 @@ export default {
         }
     },
     methods: {
+        testLogin() {
+
+        },
         signUp(){
             axios.post('/api/v1/auth/', this.userInfo)
                 .then(res => {
