@@ -10,7 +10,7 @@
                 </v-list-item>
             </v-list>
             <v-card tile class="pa-3">
-                <template v-if="erros">
+                <template v-if="errors">
                     <v-alert v-for="error in errors" :key="error" type="error" outlined>{{error}}</v-alert>
                 </template>
                 <v-sheet>
