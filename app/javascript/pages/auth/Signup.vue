@@ -11,6 +11,7 @@
             <v-card-text>新規登録</v-card-text>
             <v-form @submit.prevent="signUp">
                 <v-text-field v-model="userInfo.name" label="ユーザーネーム" :rules="nameRules" color="secondary"></v-text-field>
+                <v-select :items="items" label="ステータス" v-model="userInfo.status"></v-select>
                 <v-text-field v-model="userInfo.email" label="Email" :rules="emailRules" color="secondary"></v-text-field>
                 <v-text-field v-model="userInfo.password" label="パスワード" :rules="passwordRules" :type="show ? 'text' : 'password'" 
                     @click:append="show = !show" :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'" color="secondary">
@@ -37,9 +38,11 @@ export default {
         return{
            show: false,
            errors: {},
+           items: ['ヘビーユーザー', 'ヘビードライバー', 'プライマリー（100回未満程度）'],
            userInfo: {
                name: '',
                email: "",
+               status: "",
                password: "",
                password_confirmation: "",
            },
