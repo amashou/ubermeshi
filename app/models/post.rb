@@ -1,5 +1,6 @@
 class Post < ApplicationRecord
     mount_uploader :food_picture, PictureUploader
+    default_scope -> { order(created_at: :desc) }
     belongs_to :user
     belongs_to :restaurant
 
