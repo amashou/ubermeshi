@@ -3,7 +3,7 @@
   <v-layout row justify="center">
     <v-dialog v-model="dialog" persistent max-width="600px">
       <template v-slot:activator="{ on, attrs }">
-            <v-btn fab x-large color="pink" dark class="mr-3 float-btn" v-bind="attrs" v-on="on">
+            <v-btn fab x-large color="pink" dark class="mr-3 float-btn" v-bind="attrs" v-on="on" depressed>
                 <v-icon>mdi-plus</v-icon>
             </v-btn>
       </template>
@@ -220,7 +220,7 @@ export default {
 .float-btn {
   position: fixed;
 	bottom: 50px;
-  right: 30px;
+  right: 20px;
 }
 .uploader {
   position: relative;

@@ -12,8 +12,8 @@
                     <v-card-text>{{post.description}}</v-card-text>
                     <v-chip color="accent" right class="ma-3" outlined route :to="{ name: 'PostDetail', params: {id: post.id} }">more info</v-chip>
                 </v-card>
+                <Popup />
             </v-flex>
-            <Popup />
         </v-layout>
     </v-container>
 </template>
