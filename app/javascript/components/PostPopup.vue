@@ -118,7 +118,6 @@ export default {
     },
     methods: {
         LoggedinUser(){
-          console.log('check loggedin') ;
           this.dialog = false;
         },
         fileDown(){
@@ -132,20 +131,16 @@ export default {
             let params = '&name=' + this.saerch_name;
             axios.get(url + api + params)
                 .then(res =>{
-                    console.log(res);
                     this.restaurants = res.data.rest;
                     this.searching = true;
                 })
                 .catch( error => {
-                    console.log(error)
-                    this.errors = error.response
+                    console.log(error);
                 })
         },
         onFileChange(e){
-          console.log('target is ...', e.target.files);
           let reader = new FileReader();
           reader.onload = (e) => {
-            console.log(e);
             this.uploadFile = e.target.result
           }
           reader.readAsDataURL(e.target.files[0]);
@@ -191,10 +186,8 @@ export default {
             formData.append('postInfo[food_picture]', this.postInfo.food_picture)
             formData.append('postInfo[restaurant_name]', this.restaurantInfo.name)
             formData.append('postInfo[restaurant_address]', this.restaurantInfo.address)
-            console.log(formData);
             axiosAuth.post('/api/v1/posts', formData)
                 .then(res => {
-                    console.log(res);
                     if (res.data.errors) {
                       this.errors = res.data.errors
                     } else {

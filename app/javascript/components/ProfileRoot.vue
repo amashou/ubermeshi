@@ -61,7 +61,6 @@ export default {
     created(){
         axios.get('/api/v1/users/' + this.current_user.id)
         .then( res => {
-            console.log(res.data.user);
             this.userInfo = res.data.user;
         })
         .catch( error => {
@@ -93,7 +92,6 @@ export default {
                     if (res.data.errors){
                         this.errors = res.data.errors
                     } else {
-                        console.log(res);
                         this.$router.push({ path: '/' });
                     }
                 })

@@ -34,7 +34,6 @@ export default {
     created(){
         axios.get('/api/v1/users/' + this.current_user.id + '/posts')
         .then( res => {
-            console.log(res);
             this.posts = res.data.posts;
         })
         .catch( error => {

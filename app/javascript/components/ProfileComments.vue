@@ -75,7 +75,6 @@ export default {
     created(){
         axios.get('/api/v1/users/' + this.current_user.id + '/comments')
         .then( res => {
-            console.log(res);
             this.comments = res.data.comments;
             this.replys = res.data.replys;
         })
@@ -97,8 +96,7 @@ export default {
             axios.patch('/api/v1/'+ this.obj_name + '/' + this.update_obj.id, this.update_obj)
                 .then( res => {
                     this.dialogs = false;
-                    this.obj_name = this.update_obj = this.url = '',
-                    console.log(res);
+                    this.obj_name = this.update_obj = this.url = '';
                 })
                 .catch( error => {
                     console.log(error);
