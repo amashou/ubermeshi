@@ -35,7 +35,6 @@ export default {
     created(){
         axios.get('/api/v1/users/' + this.current_user.id + '/favorite_posts')
         .then( res => {
-            console.log(res);
             this.favorite_posts = res.data.favorite_posts;
         })
         .catch( error => {

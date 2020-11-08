@@ -27,7 +27,6 @@ export default {
     created(){
         axios.get('/api/v1/users/' + this.current_user.id)
         .then(res => {
-            console.log(res);
             this.userInfo = res.data.user;
             this.followings_count = res.data.followings_count;
             this.followers_count = res.data.followers_count;
