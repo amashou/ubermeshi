@@ -65,4 +65,7 @@ export default {
 .restaurant_address {
     height: 50px;
 }
+.post-description{
+    height: 130px;
+}
 </style>
