@@ -23,7 +23,6 @@ gem 'carrierwave'
 gem 'mini_magick', '~> 4.8'
 gem 'active_model_serializers'
 gem 'rails-i18n'
-
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'mini_racer', platforms: :ruby
 
@@ -54,6 +53,8 @@ end
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'rubocop', require:false
+  gem 'rubocop-rails', require:false
   gem "rspec-rails", "~> 3.6.0"
   gem "factory_bot_rails", "~> 4.10.0"
 end

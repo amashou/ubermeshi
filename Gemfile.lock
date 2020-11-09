@@ -50,6 +50,7 @@ GEM
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
     arel (9.0.0)
+    ast (2.4.1)
     bcrypt (3.1.16)
     bindex (0.8.1)
     bootsnap (1.4.9)
@@ -140,6 +141,9 @@ GEM
     nokogiri (1.10.10)
       mini_portile2 (~> 2.4.0)
     orm_adapter (0.5.0)
+    parallel (1.20.0)
+    parser (2.7.2.0)
+      ast (~> 2.4.1)
     public_suffix (4.0.6)
     puma (3.12.6)
     rack (2.2.3)
@@ -176,6 +180,7 @@ GEM
       method_source
       rake (>= 0.8.7)
       thor (>= 0.19.0, < 2.0)
+    rainbow (3.0.0)
     raindrops (0.19.1)
     rake (13.0.1)
     rb-fsevent (0.10.4)
@@ -185,6 +190,7 @@ GEM
     responders (3.0.1)
       actionpack (>= 5.0)
       railties (>= 5.0)
+    rexml (3.2.4)
     rspec-core (3.6.0)
       rspec-support (~> 3.6.0)
     rspec-expectations (3.6.0)
@@ -202,6 +208,22 @@ GEM
       rspec-mocks (~> 3.6.0)
       rspec-support (~> 3.6.0)
     rspec-support (3.6.0)
+    rubocop (1.2.0)
+      parallel (~> 1.10)
+      parser (>= 2.7.1.5)
+      rainbow (>= 2.2.2, < 4.0)
+      regexp_parser (>= 1.8)
+      rexml
+      rubocop-ast (>= 1.0.1)
+      ruby-progressbar (~> 1.7)
+      unicode-display_width (>= 1.4.0, < 2.0)
+    rubocop-ast (1.1.1)
+      parser (>= 2.7.1.5)
+    rubocop-rails (2.8.1)
+      activesupport (>= 4.2.0)
+      rack (>= 1.1)
+      rubocop (>= 0.87.0)
+    ruby-progressbar (1.10.1)
     ruby-vips (2.0.17)
       ffi (~> 1.9)
     ruby_dep (1.5.0)
@@ -241,6 +263,7 @@ GEM
       thread_safe (~> 0.1)
     uglifier (4.2.0)
       execjs (>= 0.3.0, < 3)
+    unicode-display_width (1.7.0)
     unicorn (5.7.0)
       kgio (~> 2.6)
       raindrops (~> 0.7)
@@ -285,6 +308,8 @@ DEPENDENCIES
   rails (~> 5.2.4)
   rails-i18n
   rspec-rails (~> 3.6.0)
+  rubocop
+  rubocop-rails
   sass-rails (~> 5.0)
   spring
   spring-commands-rspec

@@ -3,7 +3,7 @@
             <v-row class="mb-10" height="200px">
                 <v-flex md6 xs11 class="mx-auto">
                      <v-list color="primary" class="mt-4">
-                        <v-list-item route :to="{ name: 'UserDetail', params: user.id }">
+                        <v-list-item route :to="{ path: '/users/' + user.id }">
                             <v-list-item-avatar color="grey"><v-img v-if="user.thumbnail" :src="user.thumbnail.url"></v-img></v-list-item-avatar>
                             <v-list-item-content>
                                 <v-list-item-title>{{user.name}}</v-list-item-title>

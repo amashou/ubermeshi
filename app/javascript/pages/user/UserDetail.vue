@@ -12,11 +12,16 @@
                 <!-- <v-btn absolute right color="secondary" rounded top><v-icon left>mdi-lead-pencil</v-icon>編集する</v-btn> -->
             </v-list>
             <v-divider></v-divider>
+            <template v-if="errors">
+                <v-alert v-for="error in errors" :key="error" type="error" class="pa-2 mt-3" outlined>{{error}}</v-alert>
+            </template>
             <v-card-text>プロフィール：{{userInfo.profile_comment}}</v-card-text>
             <v-card-text>ステータス：{{userInfo.status}}</v-card-text>
             <v-card-text>利用回数：{{userInfo.ubered_count}}</v-card-text>
+            <v-card-text>フォロー：{{followings_count}}</v-card-text>
+            <v-card-text>フォローワー{{followers_count}}</v-card-text>
             <v-card-text>最終更新：{{userInfo.updated_at}}</v-card-text>
-            <v-card-actions><v-btn absolute right bottom outlined color="blue"><v-icon left>mdi-heart-outline</v-icon>フォロー</v-btn></v-card-actions>
+            <v-card-actions><v-btn absolute right bottom outlined color="blue" @click="follow"><v-icon left>mdi-heart-outline</v-icon>フォロー{{followers_count}}</v-btn></v-card-actions>
         </v-card>
         <v-col class="d-flex flex-row-reverse">
             <v-btn route :to="{ path: '/' }" color="pink" dark rounded class="btn">Topへ</v-btn>
@@ -31,6 +36,7 @@ import axios from '../../axios-auth';
 export default {
     data(){
         return{
+            errors: {},
             userInfo: {},   
             followers_count: '',
             followings_count: ''
@@ -50,31 +56,30 @@ export default {
     },
     methods: {
         follow(){
-            axios.post('/users/' + this.userInfo.id + '/relationships')
-                .then((response) => {
+            axios.post('/api/v1/users/' + this.userInfo.id + '/relationships')
+                .then( response => {
                     console.log(response);
-                    if(response.data.message == "followed") {
-                        this.followers_count = response.data.followers_count
-                        this.followings_count = response.data.followings_count
-                    }
+                    this.followers_count = response.data.followers_count;
+                    this.followings_count = response.data.followings_count
                 })
-                .catch((error) => {
-                    console.log(error);
+                .catch( error => {
+                    console.log(error.response);
+                    this.errors = error.response.data.errors;
                 });
         },
-        unfollow(){
-            axios.delete('/users/' + this.userInfo.id + '/relationships')
-                .then((response) => {
-                    if(response.data.message == "unfollowed") {
-                        this.followers_count = response.data.followers_count
-                        this.followings_count = response.data.followings_count
-                    }
-                    console.log(response);
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-        }
+        // unfollow(){
+        //     axios.delete('/api/v1/users/' + this.userInfo.id + '/relationships')
+        //         .then((response) => {
+        //             if(response.data.message == "unfollowed") {
+        //                 this.followers_count = response.data.followers_count
+        //                 this.followings_count = response.data.followings_count
+        //             }
+        //             console.log(response);
+        //         })
+        //         .catch((error) => {
+        //             console.log(error);
+        //         });
+        // }
     }
 }
 </script>
