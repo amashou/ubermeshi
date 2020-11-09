@@ -184,7 +184,11 @@ export default {
             formData.append('postInfo[title]', this.postInfo.title)
             formData.append('postInfo[description]', this.postInfo.description)
             formData.append('postInfo[food_picture]', this.postInfo.food_picture)
-            formData.append('postInfo[restaurant_name]', this.restaurantInfo.name)
+            if(this.restaurantInfo.name){
+              formData.append('postInfo[restaurant_name]', this.restaurantInfo.name);
+            } else {
+              formData.append('postInfo[restarant_name]', this.saerch_name);
+            }
             formData.append('postInfo[restaurant_address]', this.restaurantInfo.address)
             axiosAuth.post('/api/v1/posts', formData)
                 .then(res => {

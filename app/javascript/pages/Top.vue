@@ -6,11 +6,11 @@
                     <v-img :src="post.food_picture.url" height="200px" cover></v-img>
                     <v-divider></v-divider>
                     <v-card-title>{{post.title}}</v-card-title>
-                    <v-card-subtitle class="py-3">店名-{{post.restaurant_name}}</v-card-subtitle>
-                    <v-card-subtitle class="pt-0">住所-{{post.restaurant_address}}</v-card-subtitle>
+                    <v-card-subtitle class="py-3 post-title">店名-{{post.restaurant_name}}</v-card-subtitle>
+                    <v-card-subtitle class="pt-0 post-title">住所-{{post.restaurant_address}}</v-card-subtitle>
                     <v-divider></v-divider>
-                    <v-card-text>{{post.description}}</v-card-text>
-                    <v-chip color="accent" right class="ma-3" outlined route :to="{ name: 'PostDetail', params: {id: post.id} }">more info</v-chip>
+                    <v-card-text class="post-description">{{post.description}}</v-card-text>
+                    <v-btn color="accent" dark outlined class="ml-3 mb-3" route :to="{ name: 'PostDetail', params: {id: post.id} }">もっと見る</v-btn>
                 </v-card>
                 <Popup />
             </v-flex>
@@ -38,5 +38,10 @@ export default {
 </script>
 
 <style scoped>
-
+.post-description {
+    height: 110px;
+}
+.post-title{
+    height: 60px;
+}
 </style>
