@@ -82,11 +82,13 @@ export default {
             const MAX_TITLE_LEN = 20;
             const MAX_ADDRESS_LEN = 30;
             const MAX_RESTNAME_LEN = 30;
+            const MAX_DESCRIPTION_LEN = 60;
             let ommitedString = this.ommitedString;
             postsInfo.forEach(function(post, index) {
                 postsInfo[index].title = ommitedString(post.title, MAX_TITLE_LEN, 0);
                 postsInfo[index].restaurant_address = ommitedString(post.restaurant_address, MAX_ADDRESS_LEN, 0);
                 postsInfo[index].restaurant_name = ommitedString(post.restaurant_name, MAX_RESTNAME_LEN, 0);
+                postsInfo[index].description = ommitedString(post.description, MAX_DESCRIPTION_LEN, 0);
             });
             if(response.data.user) {
                 this.$store.dispatch("current_user", response.data.user);

@@ -5,9 +5,9 @@
                 <v-card class="mx-4 mb-4" color="#EEE" raised>
                     <v-img :src="post.food_picture.url" height="200px" cover></v-img>
                     <v-divider></v-divider>
-                    <v-card-title>{{post.title}}</v-card-title>
-                    <v-card-subtitle class="py-3 post-title">店名-{{post.restaurant_name}}</v-card-subtitle>
-                    <v-card-subtitle class="pt-0 post-title">住所-{{post.restaurant_address}}</v-card-subtitle>
+                    <v-card-title class="post-title pt-3">{{post.title}}</v-card-title>
+                    <v-card-subtitle class="py-3 restaurant-name">店名-{{post.restaurant_name}}</v-card-subtitle>
+                    <v-card-subtitle class="py-0 restaurant_address">住所-{{post.restaurant_address}}</v-card-subtitle>
                     <v-divider></v-divider>
                     <v-card-text class="post-description">{{post.description}}</v-card-text>
                     <v-btn color="accent" dark outlined class="ml-3 mb-3" route :to="{ name: 'PostDetail', params: {id: post.id} }">もっと見る</v-btn>
@@ -42,6 +42,12 @@ export default {
     height: 110px;
 }
 .post-title{
+    height: 90px;
+}
+.restaurant-name{
     height: 60px;
+}
+.restaurant_address {
+    height: 50px;
 }
 </style>
