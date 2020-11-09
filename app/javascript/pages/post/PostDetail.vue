@@ -100,6 +100,7 @@ export default {
                 this.user = res.data.userInfo;
                 this.favorites_count = res.data.favorites_count;
                 this.comments = res.data.comments;
+                this.$store.dispatch();
             })
             .catch(erro => {
                 console.log(erro);

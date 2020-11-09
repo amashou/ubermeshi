@@ -50,6 +50,7 @@
 
 <script>
 import Popup from './components/PostPopup';
+import axios from './axios-auth';
 import { mapGetters } from 'vuex';
 
 export default {
@@ -73,12 +74,30 @@ export default {
       }
     }
   },
-  created() {
-    console.log('new page created');
-    if(localStorage.getItem("access-token") !== null && localStorage.getItem("access-token") !== ''){
-      this.isAuthenticated = true;
-    }
-  },
+    created(){
+        axios.get('/api/v1/posts')
+        .then((response) => {
+            console.log(response);
+            let postsInfo = response.data.posts;
+            const MAX_TITLE_LEN = 20;
+            const MAX_ADDRESS_LEN = 30;
+            const MAX_RESTNAME_LEN = 30;
+            let ommitedString = this.ommitedString;
+            postsInfo.forEach(function(post, index) {
+                postsInfo[index].title = ommitedString(post.title, MAX_TITLE_LEN, 0);
+                postsInfo[index].restaurant_address = ommitedString(post.restaurant_address, MAX_ADDRESS_LEN, 0);
+                postsInfo[index].restaurant_name = ommitedString(post.restaurant_name, MAX_RESTNAME_LEN, 0);
+            });
+            if(response.data.user) {
+                this.$store.dispatch("current_user", response.data.user);
+                this.$store.dispatch("isLoggedIn", true);
+            }
+            this.$store.dispatch("postsInfo", postsInfo);
+        })
+        .catch((errors) => {
+            console.log(errors);
+        });
+    },
   methods: {
     logout(){
       localStorage.setItem("access-token", '');
@@ -91,6 +110,13 @@ export default {
       this.$store.dispatch("isLoggedIn", false);
       this.$router.push({path: '/'});
       window.location.reload();
+    },
+    ommitedString(string='', maxInt, startInt=0) {
+      let stringLength = string === undefined ? 0 : string.length;
+      if(stringLength > maxInt) {
+          return string.substr(startInt, maxInt) + "...";
+      }
+      return string;
     }
   }
 }

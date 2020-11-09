@@ -14,26 +14,8 @@ import axios from '../../axios-auth';
 import { mapGetters } from 'vuex';
 
 export default {
-    data(){
-        return{
-            userInfo: {},   
-            followers_count: '',
-            followings_count: '',
-        }
-    },
     computed: {
         ...mapGetters(["isLoggedIn", "current_user"])
-    },
-    created(){
-        axios.get('/api/v1/users/' + this.current_user.id)
-        .then(res => {
-            this.userInfo = res.data.user;
-            this.followings_count = res.data.followings_count;
-            this.followers_count = res.data.followers_count;
-        })
-        .catch((errors) => {
-            console.log(errors);
-        });
     }
 }
 </script>

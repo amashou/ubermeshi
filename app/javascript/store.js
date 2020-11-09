@@ -7,11 +7,13 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
         isLoggedIn: false,
-        current_user: {}
+        current_user: {},
+        postsInfo: {}
     },
     getters: {
         isLoggedIn: state => state.isLoggedIn,
-        current_user: state => state.current_user
+        current_user: state => state.current_user,
+        postsInfo: state => state.postsInfo
     },
     mutations: {
         isLoggedIn(state, status){
@@ -19,6 +21,9 @@ export default new Vuex.Store({
         },
         current_user(state, status) {
             state.current_user = status;
+        },
+        postsInfo(state,status) {
+            state.postsInfo = status;
         }
     },
     actions: {
@@ -27,6 +32,9 @@ export default new Vuex.Store({
         },
         current_user(context, status) {
             context.commit("current_user", status);
+        },
+        postsInfo(context, status) {
+            context.commit("postsInfo", status);
         }
     },
     
