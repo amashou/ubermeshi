@@ -1,5 +1,5 @@
 class Api::V1::PostSerializer < ActiveModel::Serializer
-  attributes :id, :title, :description, :food_picture
+  attributes :id, :user_id, :title, :description, :food_picture, :restaurant_name
 
   has_many :comments, serializer: Api::V1::CommentSerializer
 

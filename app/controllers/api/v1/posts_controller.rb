@@ -10,10 +10,11 @@ class Api::V1::PostsController < ApiController
   def index
     posts = Post.all
     render json: { posts: posts, user: current_api_user }
+    # render json: @posts
   end
 
   def show
-    render json: @post
+    render json: @post, serializer: PostSerializer
   end
 
   def create

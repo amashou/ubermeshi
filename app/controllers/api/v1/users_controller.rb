@@ -31,7 +31,7 @@ class Api::V1::UsersController < ApiController
 
   def update
     if @user.update_attributes(user_params)
-      render json: { status: 'SUCCESS', message: 'updated', data: @user }
+      render json: { status: 'SUCCESS', message: '更新に成功しました', data: @user }
     else
       render json: { status: 'SUCCESS', message: 'Not updated', data: @user.errors.full_messages }
     end
