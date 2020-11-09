@@ -14,7 +14,7 @@ class Api::V1::PostsController < ApiController
   end
 
   def show
-    render json: @post, serializer: PostSerializer
+    render json: @post
   end
 
   def create
