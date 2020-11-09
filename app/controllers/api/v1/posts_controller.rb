@@ -1,7 +1,7 @@
 class Api::V1::PostsController < ApiController
   before_action :authenticate_api_user!, except: [:index, :show]
   # before_action :authenticate_api_user!
-  before_action :set_post, only: [:show]
+  before_action :set_post, only: [:show, :destroy]
 
   rescue_from ActiveRecord::RecordNotFound do |exception|
     render json: { error: '404 not found' }, status: 404
@@ -36,6 +36,11 @@ class Api::V1::PostsController < ApiController
   end
 
   def destroy
+     if @post.destroy
+      render json: { status: "SUCCESS", message: "削除しました", posts: current_api_user.posts}
+     else
+      render json: { status: "FAILED", message: "削除できませんでした"}
+     end
   end
 
   private

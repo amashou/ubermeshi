@@ -11,7 +11,8 @@
                     <v-card-subtitle class="pt-0">住所-{{post.restaurant_address}}</v-card-subtitle>
                     <v-divider></v-divider>
                     <v-card-text>{{post.description}}</v-card-text>
-                    <v-chip color="accent" right class="ma-3" outlined route :to="{ name: 'PostDetail', params: {id: post.id} }">more info</v-chip>
+                    <v-chip color="accent" right class="ma-3" outlined route :to="{ name: 'PostDetail', params: {id: post.id} }">もっと見る</v-chip>
+                    <v-btn outlined fab @click="destroy(post)" small color="pink"><v-icon>mdi-trash-can-outline</v-icon></v-btn>
                 </v-card>
             </v-flex>
         </v-layout>
@@ -39,6 +40,17 @@ export default {
         .catch( error => {
             console.log(error);
         });
+    },
+    methods:{
+        destroy(post){
+            axios.delete('/api/v1/posts/' + post.id)
+                .then( res => {
+                    this.posts = res.data.posts;
+                })
+                .catch( error => {
+                    console.log(error);
+                });
+        }
     }
 }
 </script>
