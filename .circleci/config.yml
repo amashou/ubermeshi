@@ -3,42 +3,69 @@ jobs:
   build:
     docker:
       - image: circleci/ruby:2.5.8-node-browsers
+        environment:
+          - BUNDLER_VERSION: 2.1.4
+          - RAILS_ENV: test
+          - MYSQL_HOST: 'db'
+          - MYSQL_USERNAME: 'root'
+          - MYSQL_PASSWORD: 'password'
+          - MYSQL_PORT: 3306
+
+      - image: circleci/mysql:5.7
+        environment:
+          - MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
+          - MYSQL_ROOT_HOST: '%'
+
+    working_directory: ~/ubermeshi
+
     steps:
-      - run : echo "build docker"
-      #   environment:
-      #     RAILS_ENV: test
-      #     DB_HOST: 127.0.0.1
-      #     DB_USERNAME: 'root'
-      #     DB_PASSWORD: ''
+      - checkout
 
-      # - image: circleci/mysql:5.7
+      - restore_cache:
+        keys:
+          - v1-dependencies-{{ checksum "Gemfile.lock" }}
+          - v1-dependencies-
 
-    # working_directory: ~/ubermeshi_app
+      - run:
+        name: install dependencies
+        command: |
+          gem install bundler -v 2.1.4
+          bundle install --jobs=4 --retry=3 --path vendor/bundle
 
-    # steps:
-    #   - checkout
+      - save_cache:
+        paths:
+        - ./vendor/bundle
+        key: v1-dependencies-{{ checksum "Gemfile.lock" }}
 
-    #   - restore_cache:
-    #       keys:
-    #       - v1-dependencies-{{ checksum "Gemfile.lock" }}
-    #       - v1-dependencies-
+      - run: mv ./config/database.yml.ci ./config/database.yml
 
-    #   - run:
-    #       name: install dependencies
-    #       command: |
-    #         bundle install --jobs=4 --retry=3 --path vendor/bundle
+      - run:
+        name: Databasesetup
+        command: |
+           bundle exec rake db:create
+           bundle exec rake db:schema:load
+           
+      - run:
+        name: Rspec
+        command: |
+          mkdir /tmp/test-results
+          TEST_FILES="$(circleci tests glob "spec/**/*_spec.rb" | \
+            circleci tests split --split-by=timings)"
+          bundle exec rspec \
+            --format progress \
+            --format RspecJunitFormatter \
+            --out /tmp/test-results/rspec.xml \
+            --format progress \
+            $TEST_FILES
 
-    #   - save_cache:
-    #       paths:
-    #         - ./vendor/bundle
-    #       key: v1-dependencies-{{ checksum "Gemfile.lock" }}
+      - store_test_results:
+        path: /tmp/test-resul
+      - store_artifacts:
+          path: /tmp/test-results
+          destination: test-results
 
-    #   - run:
-    #       name: Wait for DB
-    #       command: dockerize -wait tcp://127.0.0.1:3306 -timeout 120s
 
-    #   - run: bundle exec rake db:create
-    #   - run: bundle exec rake db:schema:load
+
 
     #   - run:
     #       name: run tests

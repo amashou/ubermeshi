@@ -6,6 +6,7 @@ FactoryBot.define do
     title         { "test_title" }
     description   { "test_description" }
     food_picture  { "food_picture" }
+    restaurant_name { "test_restaurant" }
   end
 
   trait :with_comments do
