@@ -3,42 +3,42 @@
             <v-row class="mb-10" height="200px">
                 <v-flex md6 xs11 class="mx-auto">
                      <v-list color="primary" class="mt-4">
-                        <v-list-item route :to="{ path: '/users/' + user.id }">
-                            <v-list-item-avatar color="grey"><v-img v-if="user.thumbnail" :src="user.thumbnail.url"></v-img></v-list-item-avatar>
+                        <v-list-item route :to="{ path: '/users/' + postInfo.userInfo.id }">
+                            <v-list-item-avatar color="grey"><v-img v-if="postInfo.userInfo.thumbnail" :src="postInfo.userInfo.thumbnail.url"></v-img></v-list-item-avatar>
                             <v-list-item-content>
-                                <v-list-item-title>{{user.name}}</v-list-item-title>
-                                <v-list-item-subtitle>{{user.status}}</v-list-item-subtitle>
+                                <v-list-item-title>{{postInfo.userInfo.name}}</v-list-item-title>
+                                <v-list-item-subtitle>{{postInfo.userInfo.status}}</v-list-item-subtitle>
                             </v-list-item-content>
                         </v-list-item>
                     </v-list>
                     <v-card min-height="200px" class="pb-5" color="primary" outlined>
-                        <v-card-title>タイトル{{ post.title }}</v-card-title>
-                        <v-card-text>description{{ post.description }}</v-card-text>
+                        <v-card-title>タイトル{{ postInfo.title }}</v-card-title>
+                        <v-card-text>description{{ postInfo.description }}</v-card-text>
                             <v-btn class="ma-2 like-btn" color="secondary" outlined absolute bottom right @click="favorite">
                             <v-icon left>mdi-thumb-up</v-icon>いいね:{{favorites_count}}</v-btn>
                     </v-card>
                 </v-flex>
-                <v-flex md6 xs11 class="mx-auto mb-3 pt-5" v-if="post.food_picture.url">
-                    <v-img :src="post.food_picture.url" aspect-ratio="1.7" min-height="250px" contain max-height="300px"></v-img>
+                <v-flex md6 xs11 class="mx-auto mb-3 pt-5" v-if="postInfo.food_picture.url">
+                    <v-img :src="postInfo.food_picture.url" aspect-ratio="1.7" min-height="250px" contain max-height="300px"></v-img>
                 </v-flex>
             </v-row>
             <v-row>
                 <v-flex class="mb-5 mx-auto" md6 xs11>
                     <v-card class="" color="primary" outlined height="300px">
                         <v-card-title class="text-center">お店情報</v-card-title>
-                        <v-card-text>名前：{{restaurant.name}}</v-card-text>
-                        <v-card-text>住所：{{restaurant.address}}</v-card-text>
-                        <v-card-text>営業時間：{{restaurant.opentime}}</v-card-text>
-                        <v-card-text>電話番号：{{restaurant.tel}}</v-card-text>
-                        <v-card-actions v-if="restaurant.url !== null"><v-btn link :href="restaurant.url" color="secondary" outlined dark absolute right>詳しくはこちら</v-btn></v-card-actions>
+                        <v-card-text>名前：{{postInfo.restaurantInfo.name}}</v-card-text>
+                        <v-card-text>住所：{{postInfo.restaurantInfo.address}}</v-card-text>
+                        <v-card-text>営業時間：{{postInfo.restaurantInfo.opentime}}</v-card-text>
+                        <v-card-text>電話番号：{{postInfo.restaurantInfo.tel}}</v-card-text>
+                        <v-card-actions v-if="postInfo.restaurantInfo.url !== null"><v-btn link :href="postInfo.restaurantInfo.url" color="secondary" outlined dark absolute right>詳しくはこちら</v-btn></v-card-actions>
                     </v-card>
                 </v-flex>
                 <v-flex md6 xs11 class="mx-auto">
                     <v-card class="px-10" color="primary" outlined>
                         <v-card-title>コメント</v-card-title>
-                        <CommentDialog @reflectComment="comments.unshift($event)"></CommentDialog>
+                        <CommentDialog @reflectComment="postInfo.comments.unshift($event)"></CommentDialog>
                     <v-list color="grey lighten-2">
-                            <v-list-group v-for="(comment, index) in comments" :key="index">
+                            <v-list-group v-for="(comment, index) in postInfo.comments" :key="index">
                                 <template v-slot:activator>
                                     <v-list-item-content>
                                         <v-list-item-title class="black--text">{{comment.content}}</v-list-item-title>
@@ -87,20 +87,29 @@ export default {
     computed:{
         newreplys(){
             return this.replys;
+        },
+        postInfo(){
+            return this.$store.getters.postInfo;
+            // let postsInfo = this.$store.getters.postsInfo;
+            // for(let i = 0; i < postsInfo.length; i++) {
+            //     if(postsInfo[i].id == this.$route.params.id){
+            //         return postsInfo[i];
+            //     }
+            // }
         }
     },
     created(){
         axios.get('/api/v1/posts/'+ this.$route.params.id)
             .then(res => {
-                this.post.id = res.data.id;
-                this.post.title = res.data.title;
-                this.post.description = res.data.description;
-                this.post.food_picture = res.data.food_picture;
-                this.restaurant = res.data.restaurantInfo;
-                this.user = res.data.userInfo;
-                this.favorites_count = res.data.favorites_count;
-                this.comments = res.data.comments;
-                this.$store.dispatch();
+                this.$store.dispatch('postInfo', res.data);
+                // this.post.id = res.data.id;
+                // this.post.title = res.data.title;
+                // this.post.description = res.data.description;
+                // this.post.food_picture = res.data.food_picture;
+                // this.restaurant = res.data.restaurantInfo;
+                // this.user = res.data.userInfo;
+                // this.favorites_count = res.data.favorites_count;
+                // this.comments = res.data.comments;
             })
             .catch(erro => {
                 console.log(erro);
@@ -118,15 +127,15 @@ export default {
         },
         unfavorite(){
             axios.delete('/api/v1/posts/' + this.post.id + '/favorites')
-                .then((response) => {
+                .then( response => {
                     if(response.data.favorites_count){
                         this.favorites_count = response.data.favorites_count;
                     } else {
                         this.errors = response.data.message;
                     }
                 })
-                .catch((errors) => {
-                    console.log(errors);
+                .catch( error => {
+                    console.log(error);
                 });
         },
         sendReply(comment_id, comments_index){

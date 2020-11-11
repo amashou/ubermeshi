@@ -67,16 +67,9 @@ export default {
   computed:{
     ...mapGetters(["isLoggedIn", "current_user"])
   },
-  watch: {
-    $route(to, from){
-      if(from.name == 'Login' && localStorage.getItem("access-token") !== null && localStorage.getItem("access-token") !== ''){
-        this.isAuthenticated = true;
-      }
-    }
-  },
     created(){
         axios.get('/api/v1/posts')
-        .then((response) => {
+        .then( response => {
             console.log(response);
             let postsInfo = response.data.posts;
             const MAX_TITLE_LEN = 20;
@@ -96,8 +89,8 @@ export default {
             }
             this.$store.dispatch("postsInfo", postsInfo);
         })
-        .catch((errors) => {
-            console.log(errors);
+        .catch( error => {
+            console.log(error);
         });
     },
   methods: {
