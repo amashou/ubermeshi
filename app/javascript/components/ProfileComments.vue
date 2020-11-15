@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        <p v-if="!comments.length"></p>
+        <p v-if="!comments.length">まだコメントはありません</p>
         <v-sheet v-else max-width="600px" class="mx-auto my-12" color="secondary">
             <v-list color="pink" class="white-text">
                 <v-list-item>
