@@ -70,12 +70,20 @@
       </v-card>
       <v-card v-else class="pa-5">
         <v-card-title class="text-center"><h4 class="mx-auto">新規投稿にはアカウントが必要です</h4></v-card-title>
-        <v-card-actions class="d-flex justify-center">
-          <v-btn type="submit" color="secondary" class="mx-1" @click="testLogin()">テストログイン</v-btn>
-          <v-btn type="submit" color="secondary" class="mx-1" route :to="{ name: 'Login' }">ログイン</v-btn>
-          <v-btn type="submit" color="secondary" class="mx-1" route :to="{ name: 'Signup' }">新規登録</v-btn>
-          <v-btn type="submit" color="secondary" class="mx-1" @click="dialog = false">閉じる</v-btn>
-        </v-card-actions>
+        <v-row justify="center">
+          <v-col>
+            <v-btn type="submit" color="secondary" class="mx-1" @click="testLogin()">テストログイン</v-btn>
+          </v-col>
+          <v-col> 
+            <v-btn type="submit" color="secondary" class="mx-1" route :to="{ name: 'Login' }">ログイン</v-btn>
+          </v-col>
+          <v-col>
+             <v-btn type="submit" color="secondary" class="mx-1" route :to="{ name: 'Signup' }">新規登録</v-btn>
+          </v-col>
+          <v-col>
+             <v-btn type="submit" color="secondary" class="mx-1" @click="dialog = false">閉じる</v-btn>
+          </v-col>
+        </v-row>
       </v-card>
     </v-dialog>
   </v-layout>
