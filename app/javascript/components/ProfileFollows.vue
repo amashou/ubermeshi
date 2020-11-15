@@ -16,7 +16,7 @@
                     <v-list-item v-for="(following, index) in followings" :key="index" class="list-item py-1">
                         <v-list-item-avatar color="grey" size="32"><v-img v-if="following.thumbnail" :src="following.thumbnail.url"></v-img></v-list-item-avatar>
                         <v-list-item-content>
-                            <v-list-item-title>{{following}}<span>{{following}}</span></v-list-item-title>
+                            <v-list-item-title>{{following.name}}<span>{{following.status}}</span></v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
                     <v-divider class="my-2"></v-divider>
