@@ -38,6 +38,8 @@ URL
 
 インフラ
 * AWS(VPC, EC2, RDS、Route53、ACM, ALB)
+* Docker/Docker-compose
+* CircleCI
 * Mysql2
 * Nginx, Unicorn
 
